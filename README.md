@@ -91,7 +91,7 @@ TEMP_DIR : 임시 파일 디렉토리를 지정할 수 있습니다. 선택사�
 <entry key="Deploy">
 [
     { "TYPE" : "WAR", "NAME" : "DOC" , "REAL_PATH" : "H:/Temp/DeployBroker/1", "URL" : "http://localhost:9191/DeployBroker/" },
-    { "TYPE" : "SVN", "NAME" : "BBS" , "REAL_PATH" : "H:/Temp/DeployBroker/2", "URL" : "http://localhost:9191/DeployBroker/", "REPO" : "https://192.168.0.20/svn/bbs", "REPO_ID" : "", "REPO_PW" : "", "BUILDER" : "MAVEN", "GOAL" : "install", "PROFILE" : "dev", "WARDIR" : "/target/BBS.war", "DISABLED" : "Y" }
+    { "TYPE" : "SVN", "NAME" : "BBS" , "REAL_PATH" : "H:/Temp/DeployBroker/2", "URL" : "http://localhost:9191/DeployBroker/", "REPO" : "https://192.168.0.11/svn/bbs", "REPO_ID" : "", "REPO_PW" : "", "BUILDER" : "MAVEN", "GOAL" : "install", "PROFILE" : "dev", "WARDIR" : "/target/BBS.war", "DISABLED" : "Y" }
 ]
 </entry>
 <entry key="IPFilterMode">WHITELIST</entry>
@@ -121,31 +121,31 @@ limitations under the License.
 ------------------------------------------------------------------------------
 Using third-parties
 
-antlr
-commons-codec
-commons-collections
-commons-fileupload
-commons-io
-commons-logging
-commons-net
-cos
-log4j2
-slf4j (API)
-maven-invoker
-eclipse jgit
-platform
-sequence-library
-simpleconfigs
-sqljet
-svnkit
-taglibs-standard
-trilead-ssh2
-jna
-jsch
-jackson
-jQuery
-jQuery-UI
-babel-standalone
-react
-bootstrap3
-Nanum Gothic
+antlr  
+commons-codec  
+commons-collections  
+commons-fileupload  
+commons-io  
+commons-logging  
+commons-net  
+cos  
+log4j2  
+slf4j (API)  
+maven-invoker  
+eclipse jgit  
+platform  
+sequence-library  
+simpleconfigs  
+sqljet  
+svnkit  
+taglibs-standard  
+trilead-ssh2  
+jna  
+jsch  
+jackson  
+jQuery  
+jQuery-UI  
+babel-standalone  
+react  
+bootstrap3  
+Nanum Gothic  
