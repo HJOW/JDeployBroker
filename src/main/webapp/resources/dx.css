@@ -1,0 +1,584 @@
+@charset "UTF-8";
+
+html {
+	font-size: 12px;
+}
+
+.width-fitcontent {
+    width: fit-content;
+}
+
+.invisible {
+    display: none !important;
+}
+
+.ui-front {
+    z-index: 1100;
+}
+
+.singlelinetext {
+    white-space: nowrap !important;
+}
+
+.ellipsis {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    word-break: break-all !important;
+    white-space: nowrap;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.deploy_root {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.deploy_root .deployx_bodyheader .img_navtop_profile_img {
+	width : 30px;
+	height: 30px;
+	border-radius : 100%;
+}
+
+.deploy_root .deployx_bodycontent {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.deploy_root .deployx_bodycontent .deployx_main {
+    overflow-x: auto;
+} 
+
+.deploy_root, .deploy_dialog 
+, .deploy_root div, .deploy_dialog div {
+    font-size: 1rem;
+}
+
+.deploy_root .dxbtn, .deploy_dialog .dxbtn
+, .deploy_root ul.nav li, .deploy_root ul.nav li a, .deploy_dialog ul.nav li, .deploy_dialog ul.nav li a {
+    font-size: 1.2rem;
+}
+
+.deploy_root .dxbtn.small, .deploy_dialog .dxbtn.small {
+    font-size: 1rem;
+    margin-right: 3px;
+}
+
+.deploy_root th, .deploy_dialog th
+, .deploy_root th span, .deploy_dialog th span {
+    text-align: center;
+}
+
+.deploy_root td, .deploy_dialog td
+, .deploy_root td span, .deploy_dialog td span {
+    text-align: left;
+    padding-left: 2px;
+}
+
+.deploy_root, .deploy_root div, .deploy_root p, .deploy_root span, .deploy_root a
+, .deploy_root label, .deploy_root td, .deploy_root th
+, .deploy_dialog, .deploy_dialog div, .deploy_dialog p, .deploy_dialog span, .deploy_dialog a
+, .deploy_dialog label, .deploy_dialog td, .deploy_dialog th
+, .deploy_root input[type='button'], .deploy_root input[type='submit'], .deploy_dialog input[type='button'], .deploy_dialog input[type='submit'] {
+    font-family: "나눔고딕", 'Nanum Gothic', NanumGothic, "D2Coding", "나눔고딕코딩", NanumGothicCoding, "Nanum Gothic Coding";
+}
+
+.deploy_root input, .deploy_root select, .deploy_root textarea, .deploy_root pre, .deploy_root code, .deploy_dialog input, .deploy_dialog select, .deploy_dialog textarea, .deploy_dialog pre, .deploy_dialog code {
+    font-family: "D2Coding", "나눔고딕코딩", NanumGothicCoding, "Nanum Gothic Coding", "나눔고딕", 'Nanum Gothic', NanumGothic; color: black;
+    border: inherit;
+}
+
+.deploy_root .ui-jqgrid-btable tr, .deploy_root .ui-jqgrid-btable td, .deploy_dialog .ui-jqgrid-btable tr, .deploy_dialog .ui-jqgrid-btable td {
+    font-family: "D2Coding", "나눔고딕코딩", NanumGothicCoding, "Nanum Gothic Coding", "나눔고딕", 'Nanum Gothic', NanumGothic; color: black;
+}
+
+.deploy_root th.center, .deploy_root td.center, .deploy_dialog th.center, .deploy_dialog td.center
+, .deploy_root th.center span, .deploy_root td.center span, .deploy_dialog th.center span, .deploy_dialog td.center span {
+    text-align: center !important;
+}
+
+.deploy_root th.alignright, .deploy_root td.alignright, .deploy_dialog th.alignright, .deploy_dialog td.alignright
+, .deploy_root th.alignright span, .deploy_root td.alignright span, .deploy_dialog th.alignright span, .deploy_dialog td.alignright span {
+    text-align: right !important;
+}
+
+.deploy_root th.alignleft, .deploy_root td.alignleft, .deploy_dialog th.alignleft, .deploy_dialog td.alignleft
+, .deploy_root th.alignleft span, .deploy_root td.alignleft span, .deploy_dialog th.alignleft span, .deploy_dialog td.alignleft span {
+    text-align: left !important;
+}
+
+.deploy_root .full, .deploy_dialog .full {
+    width: 100%;
+}
+
+.deploy_root   .table_list, .deploy_root   .table_list1,
+.deploy_root   .table_view, .deploy_root   .table_view1, 
+.deploy_dialog .table_list, .deploy_dialog .table_list1,
+.deploy_dialog .table_view, .deploy_dialog .table_view1 {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem auto;
+}
+
+.deploy_root   .table_list th, .deploy_root   .table_list td, .deploy_root   .table_list1 th, .deploy_root   .table_list1 td,
+.deploy_root   .table_view th, .deploy_root   .table_view td, .deploy_root   .table_view1 th, .deploy_root   .table_view1 td, 
+.deploy_dialog .table_list th, .deploy_dialog .table_list td, .deploy_dialog .table_list1 th, .deploy_dialog .table_list1 td,
+.deploy_dialog .table_view th, .deploy_dialog .table_view td, .deploy_dialog .table_view1 th, .deploy_dialog .table_view1 td {
+    font-size: 1rem;
+}
+
+.deploy_root   .table_list.vbar th, .deploy_root   .table_list.vbar td, .deploy_root   .table_list1.vbar th, .deploy_root   .table_list1.vbar td,
+.deploy_root   .table_view.vbar th, .deploy_root   .table_view.vbar td, .deploy_root   .table_view1.vbar th, .deploy_root   .table_view1.vbar td, 
+.deploy_dialog .table_list.vbar th, .deploy_dialog .table_list.vbar td, .deploy_dialog .table_list1.vbar th, .deploy_dialog .table_list1.vbar td,
+.deploy_dialog .table_view.vbar th, .deploy_dialog .table_view.vbar td, .deploy_dialog .table_view1.vbar th, .deploy_dialog .table_view1.vbar td {
+    border-right: 1px solid rgba(189, 189, 189, 0.2);
+}
+
+.deploy_root   .table_list.vbar th:last-child, .deploy_root   .table_list.vbar td:last-child, .deploy_root   .table_list1.vbar th:last-child, .deploy_root   .table_list1.vbar td:last-child,
+.deploy_root   .table_view.vbar th:last-child, .deploy_root   .table_view.vbar td:last-child, .deploy_root   .table_view1.vbar th:last-child, .deploy_root   .table_view1.vbar td:last-child, 
+.deploy_dialog .table_list.vbar th:last-child, .deploy_dialog .table_list.vbar td:last-child, .deploy_dialog .table_list1.vbar th:last-child, .deploy_dialog .table_list1.vbar td:last-child,
+.deploy_dialog .table_view.vbar th:last-child, .deploy_dialog .table_view.vbar td:last-child, .deploy_dialog .table_view1.vbar th:last-child, .deploy_dialog .table_view1.vbar td:last-child {
+    border-right: 0;
+}
+
+.deploy_root   .table_list.font_r1 th, .deploy_root   .table_list.font_r1 td, .deploy_root   .table_list1.font_r1 th, .deploy_root   .table_list1.font_r1 td,
+.deploy_root   .table_view.font_r1 th, .deploy_root   .table_view.font_r1 td, .deploy_root   .table_view1.font_r1 th, .deploy_root   .table_view1.font_r1 td, 
+.deploy_dialog .table_list.font_r1 th, .deploy_dialog .table_list.font_r1 td, .deploy_dialog .table_list1.font_r1 th, .deploy_dialog .table_list1.font_r1 td,
+.deploy_dialog .table_view.font_r1 th, .deploy_dialog .table_view.font_r1 td, .deploy_dialog .table_view1.font_r1 th, .deploy_dialog .table_view1.font_r1 td {
+    font-size: 1rem;
+}
+
+.deploy_root   .table_list.font_r2 th, .deploy_root   .table_list.font_r2 td, .deploy_root   .table_list1.font_r2 th, .deploy_root   .table_list1.font_r2 td,
+.deploy_root   .table_view.font_r2 th, .deploy_root   .table_view.font_r2 td, .deploy_root   .table_view1.font_r2 th, .deploy_root   .table_view1.font_r2 td, 
+.deploy_dialog .table_list.font_r2 th, .deploy_dialog .table_list.font_r2 td, .deploy_dialog .table_list1.font_r2 th, .deploy_dialog .table_list1.font_r2 td,
+.deploy_dialog .table_view.font_r2 th, .deploy_dialog .table_view.font_r2 td, .deploy_dialog .table_view1.font_r2 th, .deploy_dialog .table_view1.font_r2 td {
+    font-size: 2rem;
+}
+
+.deploy_root   .table_list.font_p15 th, .deploy_root   .table_list.font_p15 td, .deploy_root   .table_list1.font_p15 th, .deploy_root   .table_list1.font_p15 td,
+.deploy_root   .table_view.font_p15 th, .deploy_root   .table_view.font_p15 td, .deploy_root   .table_view1.font_p15 th, .deploy_root   .table_view1.font_p15 td, 
+.deploy_dialog .table_list.font_p15 th, .deploy_dialog .table_list.font_p15 td, .deploy_dialog .table_list1.font_p15 th, .deploy_dialog .table_list1.font_p15 td,
+.deploy_dialog .table_view.font_p15 th, .deploy_dialog .table_view.font_p15 td, .deploy_dialog .table_view1.font_p15 th, .deploy_dialog .table_view1.font_p15 td {
+    font-size: 15px;
+}
+
+.deploy_root   .table_list.font_doc1 th, .deploy_root   .table_list.font_doc1 td, .deploy_root   .table_list1.font_doc1 th, .deploy_root   .table_list1.font_doc1 td,
+.deploy_root   .table_view.font_doc1 th, .deploy_root   .table_view.font_doc1 td, .deploy_root   .table_view1.font_doc1 th, .deploy_root   .table_view1.font_doc1 td, 
+.deploy_dialog .table_list.font_doc1 th, .deploy_dialog .table_list.font_doc1 td, .deploy_dialog .table_list1.font_doc1 th, .deploy_dialog .table_list1.font_doc1 td,
+.deploy_dialog .table_view.font_doc1 th, .deploy_dialog .table_view.font_doc1 td, .deploy_dialog .table_view1.font_doc1 th, .deploy_dialog .table_view1.font_doc1 td {
+    font-size: 24px;
+}
+
+.deploy_root   .table_list.font_doc1 th.smallfont, .deploy_root   .table_list.font_doc1 td.smallfont, .deploy_root   .table_list1.font_doc1 th.smallfont, .deploy_root   .table_list1.font_doc1 td.smallfont,
+.deploy_root   .table_view.font_doc1 th.smallfont, .deploy_root   .table_view.font_doc1 td.smallfont, .deploy_root   .table_view1.font_doc1 th.smallfont, .deploy_root   .table_view1.font_doc1 td.smallfont, 
+.deploy_dialog .table_list.font_doc1 th.smallfont, .deploy_dialog .table_list.font_doc1 td.smallfont, .deploy_dialog .table_list1.font_doc1 th.smallfont, .deploy_dialog .table_list1.font_doc1 td.smallfont,
+.deploy_dialog .table_view.font_doc1 th.smallfont, .deploy_dialog .table_view.font_doc1 td.smallfont, .deploy_dialog .table_view1.font_doc1 th.smallfont, .deploy_dialog .table_view1.font_doc1 td.smallfont {
+    font-size: 16px;
+}
+
+.deploy_root .table_centers th, .deploy_root .table_centers td
+,  .deploy_dialog .table_centers th, .deploy_dialog .table_centers td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.deploy_root .div_table_search {
+    text-align: center;
+}
+
+.deploy_root .div_table_search select {
+    padding-left  : 10px;
+    padding-right : 10px;
+    padding-top   :  3px;
+    padding-bottom:  3px;
+}
+
+.deploy_root .div_table_search .input_search_keyword, deploy_dialog .deploy_root .div_table_search .input_search_keyword {
+    width: 200px;
+}
+
+.deploy_root .right_floated, .deploy_root .span_table_header_right, .deploy_dialog .right_floated, .deploy_dialog .span_table_header_right {
+    float: right;
+}
+
+.deploy_root .binded_click, .deploy_dialog .binded_click {
+    cursor: pointer;
+}
+
+.deploy_root input.readonly, .deploy_root textarea.readonly, .deploy_dialog input.readonly, .deploy_dialog textarea.readonly {
+    background-color: rgba(100, 100, 100, 0.3);
+}
+
+.deploy_root .div_table_control, .deploy_dialog .div_table_control {
+	padding-bottom: 10px;
+}
+
+.deploy_root .div_table_control input, .deploy_root .div_table_control button, .deploy_dialog .div_table_control input, .deploy_dialog .div_table_control button {
+	margin-left: 5px;
+}
+
+.deploy_root .dxfooter, .deploy_dialog .dxfooter {
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.deploy_root .dx_opensources, .deploy_dialog .dx_opensources {
+    padding: 10px 10px 10px 10px;
+}
+
+.deploy_root .dx_opensources textarea, .deploy_root .dx_opensources iframe, .deploy_dialog .dx_opensources textarea, .deploy_dialog .dx_opensources iframe {
+    width: 100%;
+    height: 200px;
+}
+
+.deploy_root .dx_opensources textarea.small, .deploy_root .dx_opensources iframe.small, .deploy_dialog .dx_opensources textarea.small, .deploy_dialog .dx_opensources iframe.small {
+    height: 100px;
+}
+
+.deploy_root .dx_opensources_element, .deploy_dialog .dx_opensources_element {
+    margin-bottom: 30px;
+}
+
+.deploy_root .deployx_hidden, .deploy_dialog .deployx_hidden {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right:0;
+    visibility: hidden;
+}
+
+.deploy_root.debug .deployx_hidden, .deploy_dialog.debug .deployx_hidden {
+    display: block;
+    visibility: visible;
+    padding-left : 320px;
+    padding-right:  10px;
+    overflow-y: scroll;
+    height: 100px;
+}
+
+.deploy_root .deployx_hidden div, .deploy_root .deployx_hidden textarea, .deploy_dialog .deployx_hidden div, .deploy_dialog .deployx_hidden textarea {
+    width: 100%;
+}
+
+.deploy_root .dx_nav_footer {
+    position: absolute;
+    bottom: 10px;
+    left: 0px;
+    text-align: left;
+    vertical-align: middle;
+    width: 300px;
+    height: 40px;
+}
+
+.deploy_root .dx_themeselector select {
+    width: 80px;
+    text-align: left;
+    margin-left: 20px;
+    font-size: 1.4rem;
+    padding: 5px 5px 5px 5px;
+}
+
+.deploy_root .navbar-sessionarea {
+    overflow-x: hidden;
+}
+
+.deploy_root .deployx_nav.only_mobile {
+    background: transparent;
+}
+
+.deploy_root .deployx_nav.only_mobile ul {
+    background: transparent;
+}
+
+.deploy_root .deployx_nav.only_mobile li {
+    background: transparent;
+    display: inline-block;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 140px;
+}
+
+.deploy_root .deployx_nav.only_mobile li.menu_1 {
+    display: block;
+    text-align: left;
+    width: 100%;
+    background-color: rgba(250, 250, 250, 0.2);
+}
+
+.deploy_root .div_table_search, .deploy_dialog .div_table_search {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.deploy_root .div_table_search select, .deploy_dialog .div_table_search select {
+    margin-right: 5px;
+}
+
+.deploy_root .div_table_search .dxbtn, .deploy_dialog .div_table_search .dxbtn {
+    margin-left: 5px;
+}
+
+.deploy_root .table_border_plain th, .deploy_dialog .table_border_plain th
+, .deploy_root .table_border_plain td, .deploy_dialog .table_border_plain td
+, .deploy_root .table_border_plain.table_view th, .deploy_dialog .table_border_plain.table_view th
+, .deploy_root .table_border_plain.table_view td, .deploy_dialog .table_border_plain.table_view td {
+    border: 1px solid black;
+}
+
+.deploy_dialog .div_selpop_title {
+    font-size: 17px;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    padding: 10px 10px 10px 10px;
+}
+
+.deploy_root .deploy_progress, .deploy_dialog .deploy_progress {
+    height: 1.5rem;
+    min-width: 100px;
+    background-color: #C9C9C9;
+    position: relative;
+}
+
+.deploy_root .deploy_progress:before, .deploy_dialog .deploy_progress:before {
+    content: attr(data-label);
+    font-size: 0.8em;
+    position: absolute;
+    text-align: center;
+    top: 5px;
+    left: 0;
+    right: 0;
+}
+
+.deploy_root .deploy_progress .deploy_progress_inside, .deploy_dialog .deploy_progress .deploy_progress_inside {
+    background-color: #7CC4FF;
+    display: inline-block;
+    height: 100%;
+    text-align: left;
+    z-index: 1;
+}
+
+.deploy_root .deploy_progress .deploy_progress_indetermine, .deploy_dialog .deploy_progress .deploy_progress_indetermine {
+    display: inline-block;
+    width: 2rem;
+    height: 100%;
+    text-align: left;
+    position: absolute;
+    left: 0px;
+    z-index: 2;
+    background-color: #7CC4FF;
+}
+
+.deploy_root .deploy_progress .deploy_progress_text, .deploy_dialog .deploy_progress .deploy_progress_text {
+    display: inline-block;
+    width:100%;
+    height: 100%;
+    text-align: left;
+    position: absolute;
+    left: 10px;
+    z-index: 3;
+    color: #010101;
+    background:transparent;
+}
+
+.deploy_root .div_table_paging, .deploy_dialog .div_table_paging {
+    text-align: center;
+}
+
+.deploy_root .ui-tabs, .deploy_dialog .ui-tabs {
+	background: none;
+    background-color: rgba(250, 250, 250, 0.1);
+}
+
+.deploy_root .ui-tabs-panel, .deploy_dialog .ui-tabs-panel {
+	background: none;
+    background-color: rgba(250, 250, 250, 0.1);
+}
+
+.deploy_root .document_style
+, .deploy_root .document_style div
+, .deploy_root .document_style span
+, .deploy_root .document_style p
+, .deploy_root .document_style input:not(.dxbtn)
+, .deploy_root .document_style button:not(.dxbtn)
+, .deploy_root .document_style textarea
+, .deploy_root .document_style th
+, .deploy_root .document_style td
+, .deploy_dialog .document_style
+, .deploy_dialog .document_style div
+, .deploy_dialog .document_style span
+, .deploy_dialog .document_style p
+, .deploy_dialog .document_style input:not(.dxbtn)
+, .deploy_dialog .document_style button:not(.dxbtn)
+, .deploy_dialog .document_style textarea
+, .deploy_dialog .document_style th
+, .deploy_dialog .document_style td {
+	background-color: white !important;
+	color: black !important;
+}
+
+.div_chatdialog_inside .row {
+    margin-bottom: 10px;
+}
+
+.div_chatdialog_inside .row:last-child {
+    margin-bottom: 0px;
+}
+
+.div_chatdialog_inside .prog_chatmain {
+    height: 10px;
+}
+
+.div_chatdialog_inside .div_chatmain {
+    border: 1px solid rgba(150, 150, 150, 0.1);
+    box-shadow: 1px 1px 1px 0px;
+}
+
+.div_chatdialog_inside .div_chatmain .div_chatroom_message_one {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.div_chatdialog_inside .div_chatmain .div_chatroom_message_one .span_message_by {
+    font-weight: normal;
+    font-size: 1.1rem;
+}
+
+.div_chatdialog_inside .div_chatmain .div_chatroom_message_one.message_ownership_my .span_message_by {
+    font-weight: bolder;
+    font-size: 1.4rem;
+}
+
+.div_chatdialog_inside .div_chatmain .div_chatroom_message_one.message_ownership_others {
+    text-align: left;
+}
+
+.div_chatdialog_inside .div_chatmain .div_message_content {
+    background-color: rgba(180, 180, 180, 0.3);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 10%;
+    display: inline-block;
+    white-space: pre-line;
+    font-size: 1.1rem;
+    font-weight: normal;
+    font-family: "D2Coding", "나눔고딕코딩", NanumGothicCoding, "Nanum Gothic Coding", "나눔고딕", 'Nanum Gothic', NanumGothic;
+}
+
+.div_chatdialog_findrooms_inside tbody tr.tr_publicrooms td.td_publicroom_btns, .div_chatdialog_chooses_inside tbody tr td.td_ctrl {
+    text-align: right;
+    padding-right: 30px;
+}
+
+.div_chat_outside_mark {
+    display: inline-block;
+    z-index: 2;
+    width : 30px;
+    height: 30px;
+    margin-left: 10px;
+    background: transparent;
+    border-radius: 50%;
+}
+
+.div_chat_outside_mark.markposition_fixed {
+    position: fixed;
+    right : 20px;
+    bottom: 10px;
+    margin: 0;
+}
+
+.div_chat_outside_mark.new_exists {
+    filter: drop-shadow(2px 2px 1px #7777FF);
+}
+
+.div_chat_outside_mark .img_chat_balloon {
+    width: 100%;
+    background: transparent;
+    cursor: pointer;
+}
+
+.deployx_gemini {
+    font-family: "D2Coding", "나눔고딕코딩", NanumGothicCoding, "Nanum Gothic Coding", "나눔고딕", 'Nanum Gothic', NanumGothic;
+}
+
+.deployx_gemini .div_dxmessageblock {
+    text-align: right;
+}
+
+.deployx_gemini .div_dxmessageblock .div_dxmessageblock_content {
+    background-color: rgba(180, 180, 180, 0.3);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 10%;
+    display: inline-block;
+    white-space: pre-line;
+    font-size: 1.1rem;
+    font-weight: normal;
+    font-family: "D2Coding", "나눔고딕코딩", NanumGothicCoding, "Nanum Gothic Coding", "나눔고딕", 'Nanum Gothic', NanumGothic;
+}
+
+.deployx_gemini .div_dxmessageblock .span_dxmessageblock_owner {
+    font-weight: bolder;
+    font-size: 1.4rem;
+}
+
+.deployx_gemini .div_dxmessageblock.message_ownership_others {
+    text-align: left;
+}
+
+.deployx_gemini .div_djgeminiroom {
+    background-color: rgba(200, 200, 200, 0.2);
+    border: 1px solid rgba(100, 100, 100, 0.1);
+    box-shadow: 3px 2px 2px rgba(100, 100, 100, 0.4);
+    overflow-y: auto;
+    margin-top : 5px;
+    margin-bottom: 20px;
+    padding: 10px 10px 10px 10px;
+    border-radius: 10px;
+}
+
+@media (max-width: 767px) {
+    .deploy_root .only_wide {
+        visibility: hidden;
+        width : 0 !important;
+        height: 0 !important;
+    }
+    
+    .navbar-sessionarea ul.navbar-nav {
+        display: inline;
+        text-align: right;
+    }
+    
+    .navbar-sessionarea ul.navbar-nav li {
+        width: 130px;
+        display: inline-block;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    } 
+}
+
+@media (min-width: 768px) {
+    .deploy_root .only_mobile {
+        visibility: hidden;
+        width : 0 !important;
+        height: 0 !important;
+    }
+}

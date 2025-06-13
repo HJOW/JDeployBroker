@@ -1,0 +1,333 @@
+@charset "UTF-8";
+
+body:not(.deploy_colored) {
+    background-color: rgba(70, 70, 70, 0.99);
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.ui-dialog, .ui-dialog .ui-dialog-content {
+    background-color: rgba(70, 70, 70, 0.99);
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.deploy_root, .deploy_dialog {
+    overflow-x: hidden;
+    background-color: rgba(70, 70, 70, 0.9);
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.deploy_root .deployx_bodyheader a, .deploy_root .deployx_bodyheader .navbar-nav li a {
+    font-weight: bold;
+    color: rgba(157, 157, 157, 0.9);
+}
+
+.deploy_root .deployx_bodyheader a:hover, .deploy_root .deployx_bodyheader .navbar-nav li a:hover {
+    font-weight: bolder;
+    color: rgba(200, 200, 200, 0.99);
+}
+
+.deploy_root .deployx_bodyheader a.a_navtop_profile, .deploy_root .deployx_bodyheader .navbar-nav li a.a_navtop_profile {
+    color: rgba(170, 170, 170, 0.9);
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.deploy_root .deployx_bodyheader a.a_navtop_profile:hover, .deploy_root .deployx_bodyheader .navbar-nav li a.a_navtop_profile:hover {
+    color: rgba(220, 220, 220, 0.99);
+    font-weight: bolder;
+}
+
+.deploy_root .deployx_bodycontent {
+    background-image: linear-gradient(90deg, #303030 30%, #454545 100%);
+}
+
+.deploy_root .sidebar {
+    background-color: rgba(51, 51, 51, 0.99);
+    border-right: none;
+}
+
+.deploy_root .sidebar li {
+    background-color: rgba(70, 70, 70, 0.8);
+}
+
+.deploy_root .deployx_nav.only_wide li a {
+    color: rgb(200, 200, 200);
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_1 {
+    background-color: rgba(70, 70, 70, 0.8);
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_2 {
+    background-color: rgba(60, 60, 60, 0.8);
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_2.activeMenu {
+    background-color: rgba(120, 120, 120, 0.99);
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_2 a {
+    margin-left: 20px;
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_1:hover {
+    background-color: rgba(75, 75, 75, 0.85);
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_2:hover {
+    background-color: rgba(65, 65, 65, 0.85);
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_2.activeMenu:hover {
+    background-color: rgba(130, 130, 130, 0.99);
+}
+
+.deploy_root .deployx_nav.only_wide li.menu_1 a:hover, .deploy_root .deployx_nav.only_wide li.menu_2 a:hover {
+    background-color: transparent;
+}
+
+.deploy_root .sidebar {
+    overflow-y: auto;
+}
+
+.deploy_root .deployx_main {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.deploy_root input, .deploy_root select, .deploy_root textarea, .deploy_dialog input, .deploy_dialog select, .deploy_dialog textarea {
+    background-color: rgba(100, 100, 100, 0.8);
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.deploy_root pre {
+    background-color: rgba(120, 120, 120, 0.8);
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.deploy_root pre code {
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.deploy_root .form-signin {
+    padding: 15px;
+    margin: 0 auto;
+}
+.deploy_root .form-signin .form-signin-heading,
+.deploy_root .form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.deploy_root .form-signin .checkbox {
+    font-weight: 400;
+}
+.deploy_root .form-signin .form-control {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+.deploy_root .form-signin .form-control:focus {
+    z-index: 2;
+}
+.deploy_root .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.deploy_root .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.deploy_root   .table_list, .deploy_root   .table_list1,
+.deploy_root   .table_view, .deploy_root   .table_view1, 
+.deploy_dialog .table_list, .deploy_dialog .table_list1,
+.deploy_dialog .table_view, .deploy_dialog .table_view1 {
+    border: 1px solid #ddd;
+}
+
+.deploy_root   .table_list thead, .deploy_root   .table_list1 thead, 
+.deploy_dialog .table_list thead, .deploy_dialog .table_list1 thead {
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+}
+
+.deploy_root   .table_list tbody tr, .deploy_root   .table_list1 tbody tr,
+.deploy_root   .table_view tbody tr, .deploy_root   .table_view1 tbody tr,
+.deploy_dialog .table_list tbody tr, .deploy_dialog .table_list1 tbody tr,
+.deploy_dialog .table_view tbody tr, .deploy_dialog .table_view1 tbody tr {
+    background-color: rgba(80, 80, 80, 0.2);
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.deploy_root   .table_list tbody tr:hover, .deploy_root   .table_list1 tbody tr:hover,
+.deploy_dialog .table_list tbody tr:hover, .deploy_dialog .table_list1 tbody tr:hover {
+    background-color: rgba(80, 80, 80, 0.4);
+}
+
+.deploy_root   .table_list td, .deploy_root    .table_list1 td,
+.deploy_root   .table_view td, .deploy_root    .table_view1 td,
+.deploy_dialog .table_list td, .deploy_dialog  .table_list1 td,
+.deploy_dialog .table_view td, .deploy_dialog  .table_view1 td {
+    padding: 8px;                  
+    text-align: left;              
+    border-bottom: 1px solid #ddd; 
+    background-color: transparent;
+    color: rgba(230, 230, 230, 0.99);
+}
+
+.deploy_root   .table_list th, .deploy_root   .table_list1 th,
+.deploy_root   .table_view th, .deploy_root   .table_view1 th,
+.deploy_dialog .table_list th, .deploy_dialog .table_list1 th,
+.deploy_dialog .table_view th, .deploy_dialog .table_view1 th {
+    padding: 8px;                  
+    text-align: center;              
+    border-bottom: 1px solid #ddd; 
+    text-align: center;           
+    background-color: rgba(50, 50, 50, 0.9);
+    color: rgb(220, 220, 220, 0.99);
+    font-weight: bolder;
+}
+
+.deploy_root    .select_board_pagesize,
+.deploy_dialog  .select_board_pagesize {
+    padding-left  : 10px;
+    padding-right : 10px;
+    padding-top   :  3px;
+    padding-bottom:  3px;
+}
+
+.deploy_root   .table_list td.created_by, .deploy_root   .table_list td.created_date,
+.deploy_dialog .table_list td.created_by, .deploy_dialog .table_list td.created_date {
+    font-size: 10px;
+}
+
+.deploy_root .dxbtn, .deploy_dialog .dxbtn {
+    border-radius: 3px;
+    font-weight: bolder;
+    min-height: 25px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    
+    border: 1px solid rgba(110, 110, 110, 0.9);
+    color: rgba(220, 220, 220, 0.9);
+    background-color: rgba(16, 16, 16, 0.7);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.5);
+}
+
+.deploy_root .dxbtn.small, .deploy_dialog .dxbtn.small {
+    border-radius: 1px;
+    font-weight: normal;
+    min-height: 10px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px 0 rgba(5, 5, 5, 0.5);
+}
+
+.deploy_root .dxbtn:hover, .deploy_dialog .dxbtn:hover {
+    background-color: rgba(50, 50, 50, 0.8);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.6);
+}
+
+.deploy_root .dxbtn:disabled, .deploy_dialog .dxbtn:disabled {
+    border: 1px solid rgba(150, 150, 150, 0.5);
+    color: rgba(16, 16, 16, 0.2);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.1);
+}
+
+.deploy_root .dxbtn:active, .deploy_dialog .dxbtn:active {
+    border: 1px solid rgba(110, 110, 110, 0.99);
+    background-color: rgba(16, 16, 16, 0.9);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.7);
+}
+
+.deploy_root .dxbtn.dxbtn2, .deploy_dialog .dxbtn.dxbtn2 {
+    border: 1px solid rgba(180, 180, 180, 0.9);
+    color: rgba(20, 20, 20, 0.9);
+    background-color: rgba(180, 180, 180, 0.7);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.5);
+}
+
+.deploy_root .dxbtn.dxbtn2:hover, .deploy_dialog .dxbtn.dxbtn2:hover {
+    background-color: rgba(220, 220, 220, 0.7);
+}
+
+.deploy_root .dxbtn.dxbtn2:disabled, .deploy_dialog .dxbtn.dxbtn2:disabled {
+    border: 1px solid rgba(150, 150, 150, 0.9);
+    color: rgba(20, 20, 20, 0.8);
+    background-color: rgba(150, 150, 150, 0.7);
+}
+
+.deploy_root .dxbtn.dxbtn2:active, .deploy_dialog .dxbtn.dxbtn2:active {
+    border: 1px solid rgba(200, 200, 200, 0.9);
+    background-color: rgba(200, 200, 200, 0.7);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.5);
+}
+
+.deploy_root .dxbtn.page_element, .deploy_dialog .dxbtn.page_element {
+    border: 1px solid rgba(110, 110, 110, 0.9);
+    color: rgba(220, 220, 220, 0.9);
+    background-color: rgba(16, 16, 16, 0.5);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.5);
+}
+
+.deploy_root .dxbtn.page_element:hover, .deploy_dialog .dxbtn.page_element:hover {
+    background-color: rgba(50, 50, 50, 0.7);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.6);
+}
+
+.deploy_root .dxbtn.page_element.page_current, .deploy_dialog .dxbtn.page_element.page_current {
+    border: 1px solid rgba(110, 110, 110, 0.99);
+    background-color: rgba(16, 16, 16, 0.9);
+    box-shadow: 2px 2px 2px 0 rgba(5, 5, 5, 0.7);
+}
+
+.deploy_root .dxbtn.page_element.page_current:hover, .deploy_dialog .dxbtn.page_element.page_current:hover {
+    border: 1px solid rgba(130, 130, 130, 0.99);
+    background-color: rgba(25, 25, 25, 0.9);
+}
+
+.deploy_root .right_floated, .deploy_dialog .right_floated {
+    float: right;
+}
+
+.deploy_root .deployx_board .span_table_header_right, .deploy_dialog .deployx_board .span_table_header_right {
+    float: right;
+}
+
+.deploy_root .deployx_board .div_table_paging, .deploy_dialog .deployx_board .div_table_paging {
+    text-align: center;
+}
+
+.deploy_root .div_table_control, .deploy_dialog .div_table_control {
+    text-align: right;
+}
+
+.deploy_root .scrolltable_header_div, .deploy_dialog .scrolltable_header_div {
+    background-color: rgba(70, 70, 70, 0.2);
+}
+
+.deploy_root input.readonly, .deploy_root textarea.readonly, .deploy_dialog input.readonly, .deploy_dialog textarea.readonly {
+    background-color: rgba(50, 50, 50, 0.3);
+}
+
+.deploy_root .ui-tabs, .deploy_dialog .ui-tabs {
+    background: none;
+    background-color: rgba(20, 20, 20, 0.1);
+}
+
+.deploy_root .ui-tabs-panel, .deploy_dialog .ui-tabs-panel {
+    background: none;
+    background-color: rgba(20, 20, 20, 0.1);
+}
+
+

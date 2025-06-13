@@ -1,0 +1,29 @@
+@font-face {
+    font-family : "NanumGothic";
+    src : url("NanumGothic.woff2") format("woff2")
+        , url("NanumGothic.ttf") format("truetype");
+    font-weight : normal;
+    font-style : normal;
+}
+
+@font-face {
+    font-family : "NanumGothic";
+    src : url("NanumGothicBold.woff2") format("woff2")
+        , url("NanumGothicBold.ttf") format("truetype");
+    font-weight : bold;
+    font-style : normal;
+}
+
+@font-face {
+    font-family : "NanumGothicCoding";
+    src : url("NanumGothicCoding.ttf") format("truetype");
+    font-weight : normal;
+    font-style : normal;
+}
+
+@font-face {
+    font-family : "NanumGothicCoding";
+    src : url("NanumGothicCoding-Bold.ttf") format("truetype");
+    font-weight : bold;
+    font-style : normal;
+}
