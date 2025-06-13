@@ -7,8 +7,6 @@
 body { margin: 0; padding-top: 0; padding-left: 10px; padding-right: 10px; }
 </style>
 
-
-
 <script type="text/javascript">
 var __moved = false;
 function fn_calledFromIframe() {
