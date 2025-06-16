@@ -140,15 +140,19 @@ try {
 
     setProgress(sess, jobType, jobCode, -1, 100, "SVN 체크아웃 중...");
     checkoutSVN(tempDirDates, svnUrl, svnId, svnPw);
+
+    LOGGER.info("Checkout finished.");
     
     LOGGER.info("Run maven !");
     LOGGER.info("    Target  : " + target.get("NAME"));
     LOGGER.info("    Goal    : " + target.get("GOAL").toString().trim());
-    LOGGER.info("    Profile : " + target.get("PROFILE") == null ? null : target.get("PROFILE").toString().trim());
+    LOGGER.info("    Profile : " + (target.get("PROFILE") == null ? null : target.get("PROFILE").toString().trim()));
     
     // Maven 돌리기
     setProgress(sess, jobType, jobCode, -1, 100, "Maven 기동 중...");
-    runMaven(new File(ConfigManager.getConfig("JAVA_HOME")), new File(ConfigManager.getConfig("MAVEN_HOME")), new File(tempDirDates.getAbsolutePath() + File.separator + target.get("pom.xml")), target.get("GOAL").toString().trim(), target.get("PROFILE") == null ? null : target.get("PROFILE").toString().trim());
+    runMavenByConsole(new File(ConfigManager.getConfig("JAVA_HOME")), new File(ConfigManager.getConfig("MAVEN_HOME")), new File(tempDirDates.getAbsolutePath() + File.separator + "pom.xml"), target.get("GOAL").toString().trim(), target.get("PROFILE") == null ? null : target.get("PROFILE").toString().trim(), ConfigManager.getConfig("Charset"), LOGGER);
+
+    LOGGER.info("Maven Job ended !");
 
     // war 파일 찾기
     warFile = new File(tempDirDates.getAbsolutePath() + File.separator + target.get("WARDIR"));
@@ -187,6 +191,7 @@ try {
     finp.close(); finp = null;
 
     // 작업 완료
+    LOGGER.info("END !");
 } catch(Exception ex) {
     String msg = ex.getMessage();
     results.put("success", new Boolean(false));
@@ -201,7 +206,7 @@ try {
     if(fout != null) { try { fout.close(); } catch(Exception exIn) {} }
     if(finp != null) { try { finp.close(); } catch(Exception exIn) {} }
     if(warFile != null) {
-        if(warFile.exists()) warFile.delete();
+        if(warFile.exists()) delete(warFile);
     }
     if(tempDirDates != null) {
         if(tempDirDates.exists()) {

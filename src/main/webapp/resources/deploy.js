@@ -384,6 +384,7 @@ class DXTarget extends React.Component {
 
         // 전송
         const formData = new FormData( formTag[0] );
+        let endMsg = '';
         $.dx.ajax({
             url : $.ctx + '/jsp/program/deploy.jsp',
             data : formData,
@@ -392,13 +393,14 @@ class DXTarget extends React.Component {
             contentType : false,
             success : function(res) {
                 if(! res.success) {
-                    $.toast(res.message);
+                    endMsg = '배포 실패, ' + res.message;
                 } else {
-                    $.toast(targetName + ' 배포 완료');
+                    endMsg = targetName + ' 배포 완료';
                 }
             }, error : function(jqXHR, textStatus, errorThrown) {
                 $.toast('배포에 실패하였습니다.');
                 $.toast(errorThrown);
+                endMsg = '배포 실패, ' + errorThrown;
             }, complete : function() {
                 completed = true;
 
@@ -418,8 +420,10 @@ class DXTarget extends React.Component {
 
                 // 버튼 복구하고 프로그레스바 정지
                 divProg.attr('data-value', '0');
-                divProg.attr('data-message', '작업 완료');
+                divProg.attr('data-message', endMsg);
                 btnSubmit.prop('disabled', false);
+
+                $.toast(endMsg);
             }
         });
     }

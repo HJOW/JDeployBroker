@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.net.*" %><%!
-    public static int VERSION = 3;
+    public static int VERSION = 4;
 
 //   Copyright 2025 HJOW
 //
@@ -499,5 +499,15 @@
                 }
             }
         }
+    }
+
+    /** 현재의 OS가 Windows 기반인지 체크 */
+    public boolean isWindowsOS() {
+        String osType=  System.getProperty("os.name");
+        if(osType == null) return false;
+
+        osType = osType.trim().toLowerCase();
+        if(osType.startsWith("windows")) return true;
+        return false;
     }
 %>
