@@ -348,13 +348,19 @@
     
     /** 파일 또는 폴더를 삭제 (주의 ! 폴더 삭제 시, 재귀 호출 있음. 심볼릭 링크 쓰는 디렉토리는 특별히 주의 !) */
     public void delete(java.io.File dir) {
+        delete(dir, 0);
+    }
+
+    /** 이 메소드는 직접 호출하지 말 것 ! */
+    private void delete(java.io.File dir, int recursiveDepth) {
         if(dir == null) return;
         if(! dir.exists()) return;
-        
+        if(recursiveDepth >= 12) return;
+
         if(dir.isDirectory()) {
             java.io.File[] children = dir.listFiles();
             for(java.io.File f : children) {
-                delete(f);
+                delete(f, recursiveDepth + 1);
             }
         }
         dir.delete();

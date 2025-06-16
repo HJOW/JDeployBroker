@@ -228,6 +228,8 @@ class DXDeployContentArea extends React.Component {
                             this.state.targets.map((tg, idx) => {
                                 if(tg.TYPE == 'SVN') {
                                     return (<DXSVNTarget root={this} key={idx} targetdata={tg}/>);
+                                } else if(tg.TYPE == 'GIT') {
+                                    return (<DXGITTarget root={this} key={idx} targetdata={tg}/>);
                                 } else {
                                     return (<DXTarget root={this} key={idx} targetdata={tg}/>);
                                 }
@@ -586,6 +588,89 @@ class DXSVNTarget extends DXTarget {
                 </form>
             </div>
         );
+    }
+}
+
+class DXGITTarget extends DXSVNTarget {
+    submitTarget() {
+        const selfs = this;
+        let formTag = null;
+        $('.form_target_element').each(function() {
+            if( $(this).attr('data-name') == selfs.props.targetdata.NAME )  {
+                formTag = $(this);
+            }
+        });
+
+        if(formTag == null) { alert('배포 대상 정보를 매핑하는 데 실패하였습니다. 화면을 새로고침하여 주십시오.'); return; }
+        let formJson = $.dx.buildJsonFrom(formTag);
+
+        const targetName = formJson.NAME;
+        const divProg    = formTag.find(".deploy_progress");
+        const btnSubmit  = formTag.find("input.btnSubmitTarget");
+
+        // 버튼 비활성화하고, 프로그레스바 가동
+        btnSubmit.prop('disabled', true);
+        divProg.attr('data-value', '');
+        divProg.attr('data-max', '100');
+        divProg.attr('data-message', '작업 준비 중...');
+
+        // 타이머 준비
+        const varJobType = formTag.find("[name='JobType']").val();
+        const varJobCode = formTag.find("[name='JobCode']").val();
+        let completed  = false;
+        let timer = setInterval(() => {
+            fGetProgress(varJobType, varJobCode).then((res) => {
+                if(timer == null) return;
+                if(completed) return;
+
+                divProg.attr('data-max', res.max);
+                divProg.attr('data-value', res.value);
+                if(res.message) {
+                    divProg.attr('data-message', res.message);
+                }
+            });
+        }, 2000);
+
+        // 전송
+        const formData = new FormData( formTag[0] );
+        $.dx.ajax({
+            url : $.ctx + '/jsp/program/deploygit.jsp',
+            data : formJson,
+            dataType : 'JSON',
+            method : 'POST',
+            success : function(res) {
+                if(! res.success) {
+                    $.toast(res.message);
+                } else {
+                    $.toast(targetName + ' 배포 완료');
+                }
+            }, error : function(jqXHR, textStatus, errorThrown) {
+                $.toast('배포에 실패하였습니다.');
+                $.toast(errorThrown);
+            }, complete : function() {
+                completed = true;
+
+                // form 태그 초기화 (일부 항목은 초기화 후 복원)
+                formTag[0].reset();
+                formTag.find("[name='NAME']").val(targetName);
+
+                try {
+                    // 타이머 끄기
+                    if(timer != null) {
+                        clearInterval(timer);
+                        timer = null;
+                    }
+                } catch(e) {
+                    $.dx.log(e);
+                }
+
+                // 버튼 복구하고 프로그레스바 정지
+                divProg.attr('data-value', '0');
+                divProg.attr('data-message', '작업 완료');
+                btnSubmit.prop('disabled', false);
+                $.dx.progressbar.refreshAll();
+            }
+        });
     }
 }
 
