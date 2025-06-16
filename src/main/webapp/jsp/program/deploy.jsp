@@ -146,12 +146,16 @@ try {
                 throw new RuntimeException("해당 배포 대상 " + target.get("NAME") + " 에 배포할 권한이 없습니다.");
             }
         }
+        
+        // 목적지 war 파일명 지정
+        String destWarName = ConfigManager.getConfig("WARNAME");
+        if(isEmpty(destWarName)) destWarName = target.get("NAME") + ".war";
 
         // 실제 경로로 파일을 이동시키기 (읽어서 쓰기 - 덮어씌우기 위함)
         File newDir = new File(target.get("REAL_PATH").toString().trim());
         long len  = warFile.length();
         finp = new FileInputStream(warFile);
-        fout = new FileOutputStream(newDir + File.separator + target.get("NAME") + ".war");
+        fout = new FileOutputStream(newDir + File.separator + destWarName);
 
         LOGGER.info("Deploying !");
         LOGGER.info("    Target : " + target.get("NAME"));

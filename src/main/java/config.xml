@@ -22,19 +22,21 @@ Deploy : 배포 대상
    예: { "TYPE" : "WAR", "NAME" : "DX", "REAL_PATH" : "C:/apache-tomcat-9.0.104/webapps/", "URL" : "http://192.168.0.11:8080/DOC/" }
    항목 설명
        TYPE : 배포 방식 유형 (WAR, SVN, GIT) - SVN 이나 GIT 사용 시, 프로젝트는 Maven 을 사용해야 하며, 프로젝트 루트 경로에 pom.xml 이 존재해야 함.
-       NAME : 배포 대상 이름, 사용자 권한 부여할 때도 쓰이며, 배포 시 war 파일의 이름으로도 쓰인다.
+       NAME : 배포 대상 이름, 사용자 권한 부여할 때도 쓰임. WARNAME 를 지정하지 않으면, 배포 시 war 파일의 이름으로도 쓰인다.
        REAL_PATH : 배포 시 실제 war 파일이 저장될 디렉토리 경로를 지정한다. 역슬래시는 일반슬래시로 바꾸어 써야 한다. war 파일이 이미 존재하는 경우 덮어 씌워진다.
        URL : 해당 배포 대상 웹 프로젝트의 URL 로, 화면 내에서 제목 부분을 클릭하면 이 URL이 새 창으로 호출된다.
+       WARNAME : 목적지에 배포할 때 사용할 war 파일 이름 지정 (선택 사항으로, 미선택 시 NAME 항목 뒤에 .war 를 붙여 사용됨)
        DISABLED : 비활성 여부 (Y/N) 선택사항으로 기본값은 N, Y로 지정 시 로드되지 않음. (사용하지 않으나 기록으로 남기고 싶을 때 사용)
-   (아직 미구현) 배포 방식 유형이 GIT 또는 SVN인 경우 추가 항목이 필요함
+   배포 방식 유형이 GIT 또는 SVN인 경우 추가 항목이 필요함
        REPO : 저장소 URL (GIT 원격 저장소 또는 SVN 서버 URL)
        BUILDER : 소스 빌드 툴 유형 (MAVEN / GRADLE)
        GOAL : Maven Goal (여러 개 지정 시 콤마로 구분)
        PROFILE : Maven Profile (사용하지 않는 경우 공란으로 설정 필요) 
        WARDIR : Maven 작업 후 war 파일이 생성되는 위치 (상대경로로 지정)
-   (아직 미구현) 배포 방식 유형이 SVN인 경우 추가 항목이 필요함
+   배포 방식 유형이 SVN인 경우 추가 항목이 필요함
        REPO_ID : SVN 계정 ID
        REPO_PW : SVN 계정 암호
+   
        
 IPFilterMode : 접속 IP 필터링 모드, ALL / BLACKLIST / WHITELIST 중 입력
     BLACKLIST 또는 WHITELIST 사용 시 IPFilter 를 같이 사용함
@@ -57,8 +59,8 @@ TEMP_DIR : 임시 파일 디렉토리를 지정할 수 있습니다. 선택사�
 </entry>
 <entry key="Deploy">
 [
-    { "TYPE" : "WAR", "NAME" : "DOC" , "REAL_PATH" : "H:/Temp/DeployBroker/1", "URL" : "http://localhost:9191/DeployBroker/" },
-    { "TYPE" : "SVN", "NAME" : "BBS" , "REAL_PATH" : "H:/Temp/DeployBroker/2", "URL" : "http://localhost:9191/DeployBroker/", "REPO" : "https://192.168.0.11/svn/bbs", "REPO_ID" : "", "REPO_PW" : "", "BUILDER" : "MAVEN", "GOAL" : "install", "PROFILE" : "dev", "WARDIR" : "/target/BBS.war", "DISABLED" : "Y" }
+    { "TYPE" : "WAR", "NAME" : "DOC" , "REAL_PATH" : "H:/Temp/DeployBroker/1", "URL" : "http://localhost:9191/DeployBroker/", "DISABLED" : "N" },
+    { "TYPE" : "SVN", "NAME" : "BBS" , "REAL_PATH" : "H:/Temp/DeployBroker/2", "URL" : "http://localhost:9191/DeployBroker/", "DISABLED" : "N", "REPO" : "https://192.168.0.11/svn/bbs", "REPO_ID" : "", "REPO_PW" : "", "BUILDER" : "MAVEN", "GOAL" : "install", "PROFILE" : "dev", "WARDIR" : "/target/BBS.war"}
 ]
 </entry>
 <entry key="IPFilterMode">WHITELIST</entry>

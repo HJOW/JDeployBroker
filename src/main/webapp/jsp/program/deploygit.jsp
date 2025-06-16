@@ -154,11 +154,15 @@ try {
     // war 파일 찾기
     warFile = new File(tempDirDates.getAbsolutePath() + File.separator + target.get("WARDIR"));
     
+    // 목적지 war 파일명 지정
+    String destWarName = ConfigManager.getConfig("WARNAME");
+    if(isEmpty(destWarName)) destWarName = target.get("NAME") + ".war";
+    
     // 실제 경로로 파일을 이동시키기 (읽어서 쓰기 - 덮어씌우기 위함)
     File newDir = new File(target.get("REAL_PATH").toString().trim());
     long len  = warFile.length();
     finp = new FileInputStream(warFile);
-    fout = new FileOutputStream(newDir + File.separator + target.get("NAME") + ".war");
+    fout = new FileOutputStream(newDir + File.separator + destWarName);
 
     LOGGER.info("Deploying !");
     LOGGER.info("    Target : " + target.get("NAME"));
