@@ -13,20 +13,27 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-public long checkoutSVN(File dir, String svnUrl, String id, String password) {
+public long checkoutSVN(File dir, String svnUrl, long revision, String id, String password) {
     if(dir.exists()) delete(dir);
     if(! dir.exists()) dir.mkdirs();
-    
+
     SVNClientManager clientManager = SVNClientManager.newInstance(SVNWCUtil.createDefaultOptions(true), id, password);
     long rev;
-    
+
     try {
+        SVNRevision revObj = SVNRevision.HEAD;
+        if(revision >= 0L) revObj = SVNRevision.create(revision);
+
         SVNURL svnUrlInst = SVNURL.parseURIDecoded(svnUrl);
-        return clientManager.getUpdateClient().doCheckout(svnUrlInst, dir, SVNRevision.HEAD, SVNRevision.HEAD, SVNDepth.INFINITY, true);
+        return clientManager.getUpdateClient().doCheckout(svnUrlInst, dir, SVNRevision.HEAD, revObj, SVNDepth.INFINITY, true);
     } catch(SVNAuthenticationException ex) {
         throw new RuntimeException("AUTH FAILED - " + ex.getMessage(), ex);
     } catch(Exception ex) {
         throw new RuntimeException(ex.getMessage(), ex);
     }
+}
+
+public long checkoutSVN(File dir, String svnUrl, String id, String password) {
+    return checkoutSVN(dir, svnUrl, -1, id, password);
 }
 %>

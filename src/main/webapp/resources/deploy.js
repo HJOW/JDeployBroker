@@ -465,6 +465,11 @@ class DXTarget extends React.Component {
 }
 
 class DXSVNTarget extends DXTarget {
+    state = {
+        revision : '',
+        branch : '',
+        useDefault : true
+    };
     componentDidMount() {
         $.dx.progressbar.apply();
     }
@@ -554,12 +559,31 @@ class DXSVNTarget extends DXTarget {
         });
     }
 
+    onChangeUseDefaults(e) {
+        const changingParam = {
+            useDefault : !this.state.useDefault
+        };
+        if(changingParam.useDefault) {
+            changingParam.revision = '';
+            changingParam.branch = '';
+        }
+        this.setState(changingParam, () => {
+            const parents = $(e.target).parents('form.form_target_element');
+            if(changingParam.useDefault) {
+                parents.find("[name='REVISION']").val('');
+                parents.find("[name='BRANCH']").val('');
+            }
+            parents.find("[name='REV_USE_DEFAULTS']").val(changingParam.useDefault ? 'Y' : 'N');
+        });
+    }
+
     render() {
         return (
             <div className="dxdeploy_target_one" data-name={this.props.targetdata.NAME}>
                 <form onSubmit={() => {return false}} className="form_target_element" data-name={this.props.targetdata.NAME} data-type={this.props.targetdata.TYPE}>
                     <input type="hidden" name="NAME" value={this.props.targetdata.NAME}/>
                     <input type="hidden" name="TYPE" value={this.props.targetdata.TYPE}/>
+                    <input type="hidden" name="REV_USE_DEFAULTS" value={this.state.useDefault ? 'Y' : 'N'}/>
                     <input type="hidden" name="JobType" value={"deploy"}/>
                     <input type="hidden" name="JobCode" value={"deploy_" + $.dx.randomInt(8) }/>
                     <div className="container-fluid">
@@ -570,7 +594,17 @@ class DXSVNTarget extends DXTarget {
                         </div>
                         <div className="row">
                             <div className="col-sm-5">
-                                { this.props.targetdata.TYPE } : { this.props.targetdata.REPO }
+                                { this.props.targetdata.TYPE } : <span className="span_repo"> { this.props.targetdata.REPO } </span>
+                                <span className="span_revision_branches" style={{'marginLeft' : '10px'}}>
+                                    {
+                                        (this instanceof DXSVNTarget) ? (
+                                            <input type="number" name="REVISION" step="1" min="0" disabled={this.state.useDefault} defaultValue={this.state.revision} onChange={(e) => { this.setState({revision : e.target.value}); }} placeholder="Revision 번호"/>
+                                        ) : (
+                                            <input type="text" name="BRANCH" placeholder="브랜치명" disabled={this.state.useDefault} defaultValue={this.state.branch} onChange={(e) => { this.setState({branch : e.target.value}); }}/>
+                                        )
+                                    }
+                                    <label><input type="checkbox" className="chk_use_default" value="Y" checked={this.state.useDefault} onChange={(e) => { this.onChangeUseDefaults(e); }} />기본</label>
+                                </span>
                             </div>
                             <div className="col-sm-5">
                                 { this.props.targetdata.BUILDER } - { this.props.targetdata.GOAL }

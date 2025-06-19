@@ -124,6 +124,13 @@ try {
 
     tempDirDates = new File(dirTemp.getAbsolutePath() + File.separator + "temp_" + deployName + "_" + date8 + "_" + randomNumbers);
     if(! tempDirDates.exists()) tempDirDates.mkdirs();
+
+    // Branch 옵션 존재여부 검사
+    String revUseDefault = request.getParameter("REV_USE_DEFAULTS");
+    String branch = null;
+    if(! parseBool(revUseDefault)) {
+        branch = request.getParameter("BRANCH").trim();
+    }
     
     // Git 에서 가져오기
     String gitRemote = target.get("REPO")    == null ? "" : target.get("REPO").toString().trim();
@@ -131,12 +138,13 @@ try {
     LOGGER.info("Clone from GIT !");
     LOGGER.info("    Target : " + target.get("NAME"));
     LOGGER.info("    Source : " + gitRemote);
+    LOGGER.info("    Branch : " + branch == null ? "[DEFAULT]" : "branch");
     LOGGER.info("    Who    : " + sessionMap.get("ID"));
     LOGGER.info("    When   : " + date19);
     LOGGER.info("    From   : " + request.getRemoteAddr());
 
     setProgress(sess, jobType, jobCode, -1, 100, "GIT Clone 중...");
-    cloneGit(tempDirDates, gitRemote);
+    cloneGit(tempDirDates, gitRemote, branch);
 
     LOGGER.info("Cloning from GIT finished.");
     

@@ -1,4 +1,6 @@
-<%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.io.*, org.eclipse.jgit.api.Git" %><%@ include file="maven.jsp" %><%!
+<%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.io.*, org.eclipse.jgit.api.Git" %>
+<%@ page import="org.eclipse.jgit.api.CloneCommand" %>
+<%@ include file="maven.jsp" %><%!
 //   Copyright 2025 HJOW
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +15,24 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-public Git cloneGit(File dir, String remoteUrl) {
+public Git cloneGit(File dir, String remoteUrl, String branch) {
     if(dir.exists()) delete(dir);
     if(! dir.exists()) dir.mkdirs();
     
     try {
-        return Git.cloneRepository().setURI(remoteUrl).setDirectory(dir).call();
+        CloneCommand cmd = Git.cloneRepository().setURI(remoteUrl);
+        if(branch != null) {
+            List<String> lists = new ArrayList<String>();
+            lists.add(branch);
+            cmd.setBranchesToClone(lists);
+        }
+        return cmd.setDirectory(dir).call();
     } catch(Exception ex) {
         throw new RuntimeException(ex.getMessage(), ex);
     }
+}
+
+public Git cloneGit(File dir, String remoteUrl) {
+    return cloneGit(dir, remoteUrl, null);
 }
 %>

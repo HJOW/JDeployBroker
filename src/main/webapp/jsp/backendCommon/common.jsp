@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.net.*" %><%!
-    public static int VERSION = 4;
+    public static int VERSION = 5;
 
 //   Copyright 2025 HJOW
 //

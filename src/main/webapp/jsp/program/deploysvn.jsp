@@ -124,7 +124,14 @@ try {
 
     tempDirDates = new File(dirTemp.getAbsolutePath() + File.separator + "temp_" + deployName + "_" + date8 + "_" + randomNumbers);
     if(! tempDirDates.exists()) tempDirDates.mkdirs();
-    
+
+    // Revision 옵션 존재여부 검사
+    String revUseDefault = request.getParameter("REV_USE_DEFAULTS");
+    long rev = -1;
+    if(! parseBool(revUseDefault)) {
+        rev = Long.parseLong(request.getParameter("REVISION").replace(",", "").trim());
+    }
+
     // SVN 에서 가져오기
     String svnUrl = target.get("REPO")    == null ? "" : target.get("REPO").toString().trim();
     String svnId  = target.get("REPO_ID") == null ? "" : target.get("REPO_ID").toString().trim();
@@ -134,12 +141,13 @@ try {
     LOGGER.info("    Target : " + target.get("NAME"));
     LOGGER.info("    Source : " + svnUrl);
     LOGGER.info("       by  : " + svnId);
+    LOGGER.info("    Rev    : " + rev);
     LOGGER.info("    Who    : " + sessionMap.get("ID"));
     LOGGER.info("    When   : " + date19);
     LOGGER.info("    From   : " + request.getRemoteAddr());
 
     setProgress(sess, jobType, jobCode, -1, 100, "SVN 체크아웃 중...");
-    checkoutSVN(tempDirDates, svnUrl, svnId, svnPw);
+    checkoutSVN(tempDirDates, svnUrl, rev, svnId, svnPw);
 
     LOGGER.info("Checkout finished.");
     
