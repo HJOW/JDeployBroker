@@ -9,6 +9,18 @@
                 <StringMatchFilter text="data:image/"       onMatch="DENY" onMismatch="NEUTRAL"/>
             </Filters>
         </Console>
+        <!--
+        <RollingFile name="filelog"
+              filePattern="C:/logs/DeployBroker/log.%d{yyyyMMdd-HHmm}%i.log"
+              fileName="C:/logs/DeployBroker/log.log" immediateFlush="true">
+            <PatternLayout pattern="%d %-5p - %-26.26c{1} - %m%n" />
+            <Policies>
+             <SizeBasedTriggeringPolicy size="1000" />
+            </Policies>
+            <DefaultRolloverStrategy max="3" fileIndex="min" />
+            <RegexFilter regex=".*USP_ACCESSHIS_CREATE.*" onMatch="DENY" onMismatch="NEUTRAL"/>
+        </RollingFile>
+        -->
     </Appenders>
     <Loggers>
         <Root level="INFO">
