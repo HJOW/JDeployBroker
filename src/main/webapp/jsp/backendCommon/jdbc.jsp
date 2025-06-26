@@ -1,6 +1,4 @@
-<%@page import="java.io.FileNotFoundException"%>
-<%@page import="java.sql.DriverManager"%>
-<%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.ResultSetMetaData, java.io.File, org.duckdns.hjow.util.simpleconfig.ConfigManager"%><%!
+<%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.sql.DriverManager, java.sql.Connection, java.sql.PreparedStatement, java.sql.ResultSet, java.sql.ResultSetMetaData, java.sql.SQLException, java.io.File, java.io.FileNotFoundException, org.duckdns.hjow.util.simpleconfig.ConfigManager"%><%!
 /** H2 Embedded DB 동작 디렉토리 결정 */
 public File dbRootDir() {
     // DB 루트 경로 옵션 검사
@@ -33,7 +31,8 @@ public File dbRootDir() {
 }
 
 /** H2 Embedded DB 접속 */
-public Connection connect() {
+public synchronized Connection connect() {
+    Connection conn = null;
     try {
         Class.forName("org.h2.Driver");
         
@@ -43,12 +42,86 @@ public Connection connect() {
         String strDbDir = dbDir.getAbsolutePath();
         strDbDir = strDbDir.replace("\\", "/");
         
-        return DriverManager.getConnection("jdbc:h2:" + strDbDir);
+        conn = DriverManager.getConnection("jdbc:h2:" + strDbDir);
+        prepare(conn);
+        
+        return conn;
     } catch(Exception ex) {
         System.out.println("Cannot prepare embedded database. " + ex.getMessage());
         ex.printStackTrace();
+        
+        if(conn != null) {
+            try {
+                conn.close();
+            } catch(Exception exc) {
+                System.out.println("Cannot close failed database. " + exc.getMessage());
+            }
+            conn = null;
+        }
     }
     return null;
+}
+
+/** DB 사용 직후 사용준비 (테이블 생성) */
+public void prepare(Connection conn) throws Exception {
+    int counts = 0;
+    boolean prepared = false;
+    
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+    
+    // JDP_NUMBERS 테이블 존재여부 확인
+    try {
+        pstmt = conn.prepareStatement("SELECT COUNT(*) AS CNT FROM JDP_NUMBERS");
+        rs = pstmt.executeQuery();
+        
+        while(rs.next()) {
+            counts = rs.getInt(1);
+        }
+        
+        rs.close(); rs = null;
+        pstmt.close(); pstmt = null;
+        
+        if(counts <= 0) {
+            pstmt = conn.prepareStatement("DROP TABLE JDP_NUMBERS");
+            pstmt.execute();
+            conn.commit();
+            pstmt.close(); pstmt = null;
+            prepared = false;
+        } else {
+            prepared = true;
+        }
+    } catch(SQLException ex) {
+        prepared = false;
+    } catch(Exception ex) {
+        System.out.println("Cannot prepare embedded database insides - " + ex.getMessage());
+        throw new RuntimeException(ex.getMessage(), ex);
+    }
+    
+    if(prepared) return; // 준비가 이미 되어 있으면 이 메소드는 중단
+    
+    // 준비가 안되었으면...
+    
+    // JDP_NUMBERS 처리
+    try {
+        pstmt = conn.prepareStatement("CREATE TABLE JDP_NUMBERS (NUM INTEGER, CONSTRAINT PK_JDP_NUMBERS PRIMARY KEY(NUM))");
+        pstmt.execute();
+        conn.commit();
+        pstmt.close(); pstmt = null;
+        
+        for(int idx=1; idx<=10; idx++) {
+            pstmt = conn.prepareStatement("INSERT INTO JDP_NUMBERS (NUM) VALUES (?)");
+            pstmt.setInt(1, idx);
+            pstmt.execute();
+            conn.commit();
+            pstmt.close(); pstmt = null;
+        }
+    } catch(SQLException ex) {
+        prepared = false;
+    } catch(Exception ex) {
+        System.out.println("Cannot prepare embedded database insides - " + ex.getMessage());
+        throw new RuntimeException(ex.getMessage(), ex);
+    }
 }
 
 private Connection connection = null;
@@ -128,16 +201,26 @@ public synchronized int execute(org.apache.logging.log4j.Logger LOGGER, String s
         pstmt.execute();
         int updateCnt = pstmt.getUpdateCount();
         
-        connection.commit();
+        commit(LOGGER);
         pstmt.close();
         
         return updateCnt;
     } catch(Exception ex) {
         LOGGER.error("Exception when executing SQL - " + ex.getMessage(), ex);
     } finally {
-        if(connection != null) { try { connection.rollback(); } catch(Exception exc) {} }
+        rollback(LOGGER);
         if(pstmt != null) { try { pstmt.close(); pstmt = null; } catch(Exception exc) {} }
     }
     return -1;
+}
+
+public void commit(org.apache.logging.log4j.Logger LOGGER) {
+    if(connection == null) return;
+    try { connection.commit(); } catch(Exception exc) { LOGGER.error("Exception when executing JDBC commit - " + exc.getMessage(), exc); }
+}
+
+public void rollback(org.apache.logging.log4j.Logger LOGGER) {
+    if(connection == null) return;
+    try { connection.rollback(); } catch(Exception exc) { LOGGER.error("Exception when executing JDBC rollback - " + exc.getMessage(), exc); }
 }
 %>
