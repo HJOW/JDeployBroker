@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.net.*" %><%!
-    public static int VERSION = 5;
+    public static int VERSION = 6;
 
 //   Copyright 2025 HJOW
 //
@@ -516,4 +516,4 @@
         if(osType.startsWith("windows")) return true;
         return false;
     }
-%>
+%><%@ include file="jdbc.jsp" %>

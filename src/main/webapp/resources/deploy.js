@@ -603,7 +603,7 @@ class DXSVNTarget extends DXTarget {
                                             <input type="text" name="BRANCH" placeholder="브랜치명" disabled={this.state.useDefault} defaultValue={this.state.branch} onChange={(e) => { this.setState({branch : e.target.value}); }}/>
                                         )
                                     }
-                                    <label><input type="checkbox" className="chk_use_default" value="Y" checked={this.state.useDefault} onChange={(e) => { this.onChangeUseDefaults(e); }} />기본</label>
+                                    <label style={{'marginLeft' : '10px'}}><input type="checkbox" className="chk_use_default" value="Y" checked={this.state.useDefault} onChange={(e) => { this.onChangeUseDefaults(e); }} style={{'marginRight' : '5px'}}/><span>HEAD Revision</span></label>
                                 </span>
                             </div>
                             <div className="col-sm-5">

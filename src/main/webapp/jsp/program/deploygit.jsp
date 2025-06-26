@@ -179,21 +179,35 @@ try {
     LOGGER.info("    Who : " + sessionMap.get("ID"));
     LOGGER.info("    From : " + request.getRemoteAddr());
 
+    // 버퍼 준비
+    String strBufferSize = ConfigManager.getConfig("BufferSize");
+    int    bufferSize = 2048;
+    if(! isEmpty(strBufferSize)) bufferSize = Integer.parseInt(strBufferSize.trim());
+    buffers = new byte[bufferSize];
+    bufferSize = buffers.length;
+
+    // 슬립 주기 지정
+    String strSleepGap = ConfigManager.getConfig("SleepGap");
+    int    sleepGap    = 100;
+    if(! isEmpty(strSleepGap)) sleepGap = Integer.parseInt(strSleepGap.trim());
+
+    // 최대 작업량 계산 (진행 상태 출력을 위함)
     long comp = len + 10L;
     len = (len * 2L) + 10L;
 
+    // 목표 지점으로 파일 옮기기
     int loopCnt = 0;
     int r;
     while(true) {
-        r = finp.read(buffers, 0, buffers.length);
+        r = finp.read(buffers, 0, bufferSize);
         if(r < 0) break;
 
         fout.write(buffers, 0, r);
         comp += r;
         loopCnt++;
 
-        if(loopCnt %  10 == 0) setProgress(sess, jobType, jobCode, (int) (comp / 16384), (int) (len / 16384), "WAR 파일 복사 중...");
-        if(loopCnt % 100 == 0) Thread.sleep(50L);
+        if(loopCnt % 10 == 0) setProgress(sess, jobType, jobCode, (int) (comp / 16384), (int) (len / 16384), "WAR 파일 복사 중...");
+        if(loopCnt % sleepGap == 0) Thread.sleep(50L);
     }
 
     fout.close(); fout = null;
