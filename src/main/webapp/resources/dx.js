@@ -26,6 +26,8 @@ $.dx.themeoption.menuClickUnit = 'a';
 
 $.dx.log = function(t) { try { console.log(t); } catch(e) {} };
 $.log = $.dx.log;
+$.dx.tries = function(callback) { try { if(typeof(callback) == 'function') callback(); } catch(e) { $.dx.log(e); $.toast(e); } };
+$.dx.t = $.dx.tries;
 $.dx.ajaxheader = { };
 $.dx.ajaxevents = { success : [], error : [], complete : [] };
 $.dx.editor = {};
@@ -1754,16 +1756,21 @@ function destroyEditor(editorInstance) {
 $.dx.editor.destroy = destroyEditor;
 
 
+// 스토리지 관련
+$.dx.storage = {};
+$.dx.storage.site = 'dx';
+$.dx.storage.subs = 3;
+
 /** localStorage 저장 데이터 조회 */
 function getLocalSession() {
     if(typeof(localStorage) != 'object') return {};
     
-    var strContent = localStorage.getItem('deployx_locals');
+    var strContent = localStorage.getItem($.dx.storage.site + '_' + $.dx.storage.subs + '_locals');
     if($.dx.isnullempty(strContent)) return {};
     
     try{ return JSON.parse(strContent); } catch(e) { $.dx.log('Warning ! Local session loading failed.'); $.dx.log(e); return {}}
 }
-$.dx.storage = {};
+
 $.dx.storage.local = {};
 $.dx.storage.local.get = getLocalSession;
 
@@ -1771,7 +1778,7 @@ $.dx.storage.local.get = getLocalSession;
 function getTabSession() {
     if(typeof(sessionStorage) != 'object') return { header : {} };
     
-    var strContent = sessionStorage.getItem('deployx_sessions');
+    var strContent = sessionStorage.getItem('djbbs_sessions');
     if($.dx.isnullempty(strContent)) return { header : {} };
     
     try{ return JSON.parse(strContent); } catch(e) { $.dx.log('Warning ! Local session loading failed.'); $.dx.log(e); return {}}
@@ -1785,7 +1792,7 @@ function saveLocalSession(jsonObj) {
     if(typeof(jsonObj) == 'string') jsonObj = JSON.parse(jsonObj);
     
     if(typeof(localStorage) != 'object') return;
-    localStorage.setItem('deployx_locals', JSON.stringify(jsonObj));
+    localStorage.setItem($.dx.storage.site + '_' + $.dx.storage.subs + '_locals', JSON.stringify(jsonObj));
 }
 $.dx.storage.local.set = saveLocalSession;
 
@@ -1795,7 +1802,7 @@ function saveTabSession(jsonObj) {
     if(typeof(jsonObj) == 'string') jsonObj = JSON.parse(jsonObj);
     
     if(typeof(sessionStorage) != 'object') return;
-    sessionStorage.setItem('deployx_locals', JSON.stringify(jsonObj));
+    sessionStorage.setItem($.dx.storage.site + '_' + $.dx.storage.subs + '_locals', JSON.stringify(jsonObj));
 }
 $.dx.storage.session.set = saveTabSession;
 
@@ -1816,6 +1823,51 @@ function saveLocalSessionOnCookie(jsonObj) {
     $.dx.cookie.set('djstorage', JSON.stringify(jsonObj));
 }
 $.dx.storage.cookie.set = saveLocalSessionOnCookie;
+
+// 암호화 기능
+$.dx.crypto = {};
+$.dx.crypto.currentKey = '';
+$.dx.crypto.sha256 = {};
+$.dx.crypto.sha256.enc = function(content) {
+    return CryptoJS.SHA256(String(content)).toString();
+};
+$.dx.crypto.aes = {};
+$.dx.crypto.aes.enc = function(content, password) {
+    return CryptoJS.AES.encrypt(String(content), $.dx.crypto.sha256.enc(password)).toString();
+};
+$.dx.crypto.aes.dec = function(encrypted, password) {
+    return CryptoJS.AES.decrypt(String(encrypted), $.dx.crypto.sha256.enc(password)).toString(CryptoJS.enc.Utf8);
+};
+$.dx.crypto.getKey = function(callback) {
+    var responsed = false;
+    var keys = '';
+    $.dx.ajax({
+        url : $.ctx + '/jsp/session/frontStorageKey.jsp',
+        data : {},
+        method : 'POST',
+        dataType : 'json',
+        success : function(res) {
+            if(res.success) keys = res.content;
+            
+            if(responsed) return;
+            responsed = true;
+            if(! res.success) $.toast(res.message);
+            if(typeof(callback) == 'function') callback(keys);
+        }, complete : function() {
+            if(responsed) return;
+            responsed = true;
+            if(! res.success) $.toast(res.message);
+            if(typeof(callback) == 'function') callback(keys);
+        }
+    });
+};
+$.dx.crypto.key = function(callback) {
+    if($.dx.crypto.currentKey != '') {
+        if(typeof(callback) == 'function') callback($.dx.crypto.currentKey);
+    } else {
+        $.dx.crypto.getKey(callback);
+    }
+};
 
 /** 테마 변경 */
 function setTheme(theme) {

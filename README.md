@@ -150,4 +150,5 @@ jQuery-UI
 babel-standalone  
 react  
 bootstrap3  
+Crypto-JS
 Nanum Gothic  

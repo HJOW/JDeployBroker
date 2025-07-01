@@ -317,7 +317,7 @@ class DXLoginScreen extends React.Component {
                             <label htmlFor="dxlogin_id" className="sr-only">Email address</label>
                             <input type="text" id="dxlogin_id" className="form-control" placeholder="ID" name="id" required={true} autoFocus={true}/>
                             <label htmlFor="dxlogin_pw" className="sr-only">Password</label>
-                            <input type="password" id="dxlogin_pw" name="pw" className="form-control" placeholder="Password" required={true}/>
+                            <input type="password" id="dxlogin_pw" name="pw" className="form-control" placeholder="Password" required={true} onKeyPress={(e) => { if(e.keyCode == 13 || e.charCode == 13) {  $('#btnSubmit').trigger('click');  }; return false; }}/>
                             <div style={{"textAlign" : "right"}}><button className="dxbtn dxbtn2" type="button" id="btnSubmit">LOG IN</button></div>
                         </div>
                     </form>

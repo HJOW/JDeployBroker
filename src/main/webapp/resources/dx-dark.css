@@ -109,6 +109,10 @@ body:not(.deploy_colored) {
     color: rgba(230, 230, 230, 0.99);
 }
 
+.deploy_root input[type="checkbox"], .deploy_dialog input[type="checkbox"] {
+    accent-color: #505050;
+}
+
 .deploy_root .form-signin {
     padding: 15px;
     margin: 0 auto;
@@ -294,6 +298,18 @@ body:not(.deploy_colored) {
 .deploy_root .dxbtn.page_element.page_current:hover, .deploy_dialog .dxbtn.page_element.page_current:hover {
     border: 1px solid rgba(130, 130, 130, 0.99);
     background-color: rgba(25, 25, 25, 0.9);
+}
+
+.deploy_root label.lb_for_chk, .deploy_dialog label.lb_for_chk {
+    color: #676767;
+}
+
+.deploy_root label.lb_for_chk:hover, .deploy_dialog label.lb_for_chk:hover {
+    color: #505050;
+}
+
+.deploy_root label.lb_for_chk.disabled, .deploy_dialog label.lb_for_chk.disabled {
+    color: #b9b9b9;
 }
 
 .deploy_root .right_floated, .deploy_dialog .right_floated {

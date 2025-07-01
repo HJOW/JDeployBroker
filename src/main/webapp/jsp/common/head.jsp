@@ -39,6 +39,7 @@
 <script type='text/javascript' src='<c:url value="/resources/bootstrap-3.4.1-dist/js/bootstrap.js"/>'></script>
 <script type='text/javascript' src='<c:url value="/resources/jquery.toast.js"/>'></script>
 <script type='text/javascript' src='<c:url value="/resources/moment.min.js"/>'></script>
+<script type='text/javascript' src='<c:url value="/resources/crypto-js.min.js"/>'></script>
 <script type='text/javascript'>
 $.ctx = '<c:out value="${ctx}"/>';
 </script>
