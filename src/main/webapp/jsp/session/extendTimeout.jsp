@@ -10,15 +10,11 @@ request.setAttribute("ctx", sess.getServletContext().getContextPath());
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="icon" type='icon/x-icon' href='<c:url value="/resources/favicon.ico"/>'/>
-<link rel="stylesheet" type="text/css" href='<c:url value="/resources/jqueryui/themes/dark/jquery-ui.css"/>'/>
-<link rel="stylesheet" type="text/css" href='<c:url value="/resources/jqueryui/themes/dark/jquery-ui.structure.css"/>'/>
-<link rel="stylesheet" type="text/css" href='<c:url value="/resources/jqueryui/themes/dark/jquery-ui.theme.css"/>'/>
 <link rel="stylesheet" type="text/css" href='<c:url value="/resources/dxframe.css"/>'/>
 <link rel="stylesheet" type="text/css" href='<c:url value="/resources/dx.css"/>'/>
 <link rel="stylesheet" type="text/css" href='<c:url value="/resources/dx-dark.css"/>'/>
 <script type='text/javascript' src='<c:url value="/resources/jquery/jquery-1.12.4.js"/>'></script>
 <script type='text/javascript' src='<c:url value="/resources/jquery/jquery-migrate-1.4.1.min.js"/>'></script>
-<script type='text/javascript' src='<c:url value="/resources/jqueryui/themes/dark/jquery-ui.js"/>'></script>
 <style type="text/css">
 body, div {
     margin : 0;
