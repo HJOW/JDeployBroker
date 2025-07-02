@@ -2832,7 +2832,7 @@ function initApplyDefaults() {
     $.each(localData.header, function(k, v) { $.dx.ajaxheader[k] = v; });
     
     // 테마
-    if(! isnullempty( localData.theme )) $.dx.theme = localData.theme;
+    if(($.dx.isnullempty(metas.theme)) && (! $.dx.isnullempty( localData.theme ))) $.dx.theme = localData.theme;
     
     // 엔터키 이벤트
     $.dx.applyEnterSearch();
