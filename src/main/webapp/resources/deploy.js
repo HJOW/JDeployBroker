@@ -249,7 +249,8 @@ class DXDeployContentArea extends React.Component {
 class DXLoginScreen extends React.Component {
     state = {
         id : '',
-        pw : ''
+        pw : '',
+        captcha : ''
     };
 
     componentDidMount() {
@@ -318,7 +319,13 @@ class DXLoginScreen extends React.Component {
                             <input type="text" id="dxlogin_id" className="form-control" placeholder="ID" name="id" required={true} autoFocus={true}/>
                             <label htmlFor="dxlogin_pw" className="sr-only">Password</label>
                             <input type="password" id="dxlogin_pw" name="pw" className="form-control" placeholder="Password" required={true} onKeyPress={(e) => { if(e.keyCode == 13 || e.charCode == 13) {  $('#btnSubmit').trigger('click');  }; return false; }}/>
-                            <div style={{"textAlign" : "right"}}><button className="dxbtn dxbtn2" type="button" id="btnSubmit">LOG IN</button></div>
+                            <div style={{textAlign : 'center'}}>
+                                <iframe src={ $.ctx + '/jsp/program/captcha.jsp?type=html&width=300&height=100' } style={{ width: '300px', height : '100px', border: '0' }}></iframe>
+                            </div>
+                            <div style={{"textAlign" : "right"}}>
+                                <input type='text' name='captcha' placeholder='' style={{ height : '25px', linnerHeight : '25px', marginRight : '5px' }} onKeyPress={(e) => { if(e.keyCode == 13 || e.charCode == 13) {  $('#btnSubmit').trigger('click');  }; return false; }}/>
+                                <button className="dxbtn dxbtn2" type="button" id="btnSubmit">LOG IN</button>
+                            </div>
                         </div>
                     </form>
                 </div>

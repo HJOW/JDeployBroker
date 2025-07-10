@@ -13,6 +13,18 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+public String createRandomCaptchaKey(int digits) {
+    StringBuilder res = new StringBuilder("");
+    for(int idx=0; idx<digits; idx++) {
+        char ones = (char) ('A' + (int) ( Math.random() * 24 ));
+        if(ones == 'O') ones = 'Y';
+        if(ones == 'I') ones = 'Z';
+        res = res.append(String.valueOf(ones));
+    }
+    
+    return res.toString();
+}
+
 public String createCaptcha(String key, int width, int height) {
    try {
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -26,16 +38,27 @@ public String createCaptcha(String key, int width, int height) {
       g.setFont(new Font("Arial", Font.BOLD, fontSize));
       g.setColor(new Color(0, 0, 0));
 
-      int i;
+      int i, x, y;
+      x = 10;
       Random rd = new Random();
       for(i=0; i<key.length(); i++) {
-        g.drawString(String.valueOf(key.charAt(i)), rd.nextInt(width - 20) + 10, rd.nextInt(height - 10) + 20);
+          x += (fontSize + 1) + (Math.random() * ( width / (key.length() + 2) ));
+          y = rd.nextInt(height) - fontSize;
+          
+          if(x < 10) x = 10;
+          if(y < 10) y = 10;
+          if(x >= width  - fontSize) x = width  - fontSize; 
+          if(y >= height - fontSize) y = height - fontSize;
+          
+          System.out.println(x + ", " + y);
+          // (i * (fontSize + 1)) + rd.nextInt(fontSize / 2) + 10, rd.nextInt(height - fontSize - 2) - 5
+          g.drawString(String.valueOf(key.charAt(i)), x, y);
       }
 
       int noisesCount = 20;
       for(i=0; i<noisesCount; i++) {
-        g.setColor(new Color( rd.nextInt(255), rd.nextInt(255), rd.nextInt(255) ));
-        g.drawLine(rd.nextInt(width), rd.nextInt(height), rd.nextInt(width), rd.nextInt(height));
+          g.setColor(new Color( rd.nextInt(255), rd.nextInt(255), rd.nextInt(255) ));
+          g.drawLine(rd.nextInt(width), rd.nextInt(height), rd.nextInt(width), rd.nextInt(height));
       }
 
       ByteArrayOutputStream collector = new ByteArrayOutputStream();

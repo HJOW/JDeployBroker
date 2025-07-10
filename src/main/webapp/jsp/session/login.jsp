@@ -37,6 +37,8 @@ try {
     String id = request.getParameter("id").trim();
     String pw = request.getParameter("pw").trim();
     
+    String captchaInputs = request.getParameter("captcha").trim();
+    
     // 로그인 시도는 무조건 로그 출력
     LOGGER.info("Login Trying !");
     LOGGER.info("    ID : " + id);
@@ -45,6 +47,21 @@ try {
 
     // IP 접속 허용여부 체크
     if(! isMatched(request.getRemoteAddr(), ConfigManager.getConfig("IPFilterMode"), ConfigManager.getConfig("IPFilter"))) throw new RuntimeException("접속할 수 있는 IP 가 아닙니다.");
+    
+    // Captcha 체크
+    Object oCapt = sess.getAttribute("deploybroker_capt");
+    if(! isEmpty(oCapt)) {
+        if(! captchaInputs.equalsIgnoreCase(oCapt.toString())) {
+            results.put("success", new Boolean(false));
+            results.put("message", "화면에 보이는 이미지 코드를 올바르게 입력해 주세요.");
+
+            beforeProcessResponse(request, response, LOGGER, null, results);
+            
+            response.setCharacterEncoding(charset);
+            mapper.writeValue(response.getOutputStream(), results);
+            return;
+        }
+    }
     
     // Manager 계정 조회 (config.xml 참고)
     String strManagerAccounts = ConfigManager.getConfig("Manager");

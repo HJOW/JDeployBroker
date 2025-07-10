@@ -26,15 +26,58 @@ beforeProcessRequest(request, response, LOGGER, sessionMap, results);
 String charset = ConfigManager.getConfig("Charset");
 
 try {
+    String randomKey = createRandomCaptchaKey(6);
+    sess.setAttribute("deploybroker_capt", randomKey); // 세션에 등록
+    
     int width   = Integer.parseInt(request.getParameter("width"));
     int height  = Integer.parseInt(request.getParameter("height"));
-    String capt = createCaptcha(request.getParameter("key"), width, height);
+    
+    width  -= 20;
+    height -= 40;
+    
+    String capt = createCaptcha(randomKey, width, height);
 
     String reqType = request.getParameter("type");
     if(reqType != null && "img".equals(reqType)) {
         response.setContentType("text/html");
         response.setCharacterEncoding(charset);
-        response.getWriter().write("<img src='" + capt + "'/>");
+        response.getWriter().write("<img src='" + capt + "' style='width: " + width + "px; height: " + height + "px'/>");
+
+        return;
+    }
+    
+    if(reqType != null && "html".equals(reqType)) {
+        response.setContentType("text/html");
+        response.setCharacterEncoding(charset);
+        
+        String ctx = sess.getServletContext().getContextPath();
+        
+        StringBuilder htmls = new StringBuilder("");
+        htmls = htmls.append("<!DOCTYPE html>").append("\n");
+        htmls = htmls.append("<html>").append("\n");
+        htmls = htmls.append("<head>").append("\n");
+        
+        htmls = htmls.append("<meta charset=\"UTF-8\"/>").append("\n");
+        htmls = htmls.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>").append("\n");
+        htmls = htmls.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>").append("\n");
+        htmls = htmls.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>").append("\n");
+        
+        htmls = htmls.append("<link rel='stylesheet' type='text/css' href='" + ctx + "/resources/dx.css'/>").append("\n");
+        htmls = htmls.append("<link rel='stylesheet' type='text/css' href='" + ctx + "/resources/dx-dark.css'/>").append("\n");
+        
+        htmls = htmls.append("<style type='text/css'>").append("\n");
+        htmls = htmls.append("body, div { margin: 0; padding: 0; vertical-align: middle; text-align: center; }").append("\n");
+        htmls = htmls.append("</style>").append("\n");
+        
+        htmls = htmls.append("</head>").append("\n");
+        htmls = htmls.append("<body>").append("\n");
+        htmls = htmls.append("<div>").append("\n");
+        htmls = htmls.append("<img src='" + capt + "' style='width: " + width + "px; height: " + height + "px'/>").append("\n");
+        htmls = htmls.append("<input type='button' onclick='location.reload();' value='REFRESH'/>").append("\n");
+        htmls = htmls.append("</div>").append("\n");
+        htmls = htmls.append("</body>").append("\n");
+        htmls = htmls.append("</html>");
+        response.getWriter().write(htmls.toString());
 
         return;
     }
