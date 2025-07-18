@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.io.*, org.eclipse.jgit.api.Git" %>
+<%@ page language="java" pageEncoding="UTF-8" import="java.util.*, java.io.*, org.eclipse.jgit.api.*, org.eclipse.jgit.lib.*, org.eclipse.jgit.revwalk.*, org.eclipse.jgit.transport.*" %>
 <%@ page import="org.eclipse.jgit.api.CloneCommand" %>
 <%@ include file="maven.jsp" %><%!
 //   Copyright 2025 HJOW
@@ -34,5 +34,37 @@ public Git cloneGit(File dir, String remoteUrl, String branch) {
 
 public Git cloneGit(File dir, String remoteUrl) {
     return cloneGit(dir, remoteUrl, null);
+}
+
+public List<Map<String, Object>> getHistory(String remoteUrl) {
+    Git git = null;
+    try {
+        Repository repo = null;
+        
+        // CredentialsProvider cre = new UsernamePasswordCredentialsProvider(id, password);
+        
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        
+        git = new Git(repo);
+        Iterable<RevCommit> commits = git.log().all().call();
+        for(RevCommit commitOne : commits) {
+            Map<String, Object> entryMap = new HashMap<String, Object>();
+            
+            entryMap.put("revision", String.valueOf(commitOne.getId()));
+            entryMap.put("author", commitOne.getAuthorIdent().getName());
+            entryMap.put("date", commitOne.getCommitTime());
+            entryMap.put("message", commitOne.getFullMessage());
+            
+            list.add(entryMap);
+        }
+        
+        return list;
+    } catch(Exception ex) {
+        throw new RuntimeException(ex.getMessage(), ex);
+    } finally {
+        if(git != null) {
+            git.close();
+        }
+    }
 }
 %>

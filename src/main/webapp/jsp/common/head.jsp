@@ -33,6 +33,7 @@
 <link rel="stylesheet" type="text/css" href='<c:url value="/resources/login.css"/>'/>
 <link rel="stylesheet" type="text/css" href='<c:url value="/resources/dx.css"/>'/>
 <link rel="stylesheet" type="text/css" href='<c:url value="/resources/dx-dark.css"/>'/>
+<link rel="stylesheet" type="text/css" href='<c:url value="/resources/deploy.css"/>'/>
 <script type='text/javascript' src='<c:url value="/resources/jquery/jquery-1.12.4.js"/>'></script>
 <script type='text/javascript' src='<c:url value="/resources/jquery/jquery-migrate-1.4.1.min.js"/>'></script>
 <script type='text/javascript' src='<c:url value="/resources/jqueryui/themes/dark/jquery-ui.js"/>'></script>

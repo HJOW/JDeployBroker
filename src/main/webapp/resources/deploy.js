@@ -611,7 +611,7 @@ class DXSVNTarget extends DXTarget {
         <head>
             <meta charset="utf-8"/>
             <style>
-            body {margin: 0; padding-top: 0; padding-left: 10px; padding-right: 15px; padding-bottom: 10px;}
+            body {margin: 0; padding-top: 0; padding-left: 10px; padding-right: 20px; padding-bottom: 10px; background-color: rgba(70, 70, 70, 0.9); color: rgba(230, 230, 230, 0.99); }
             table { width: 100%; border-collapse: collapse; }
             th, td { 
                 border: 1px solid black; 
@@ -620,7 +620,15 @@ class DXSVNTarget extends DXTarget {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: pre-wrap;
+                padding: 5px 5px 5px 5px;
             }
+            tr { background-color: rgba(50, 50, 50, 0.5); }
+            tr:hover { background-color: rgba(50, 50, 50, 0.7); }
+            th { font-weight: bolder; background-color: rgba(30, 30, 30, 0.5); }
+            td { font-weight: normal; background: transparent; }
+            th, td.center { text-align: center; }
+            th.left, td.left { text-align: left; }
+            th.right, td.right { text-align: right; }
             td .scroll {
                 overflow: auto;
                 width: 100%;
@@ -628,7 +636,7 @@ class DXSVNTarget extends DXTarget {
             </style>
         </head>
         <body>
-            <h4>SVN History</h4>
+            <h4>` + this.props.targetdata.NAME + ` - SVN History</h4>
             <div>
                 <table>
                     <colgroup>
@@ -653,11 +661,11 @@ class DXSVNTarget extends DXTarget {
             const historyOne = histories[idx];
 
             htmls += "<tr class='tr_svn_histories'>";
-            htmls += "<td class='td_revision'>" + historyOne.revision + "</td>";
-            htmls += "<td class='td_date'>" + historyOne.date + "</td>";
-            htmls += "<td class='td_author'>" + historyOne.author + "</td>";
-            htmls += "<td class='td_message'><div class='scroll div_message' style='max-height: 50px;'>" + historyOne.message + "</div></td>";
-            htmls += "<td class='td_files'><div class='scroll div_files' style='max-height: 50px;'>"
+            htmls += "<td class='td_revision center'>" + historyOne.revision + "</td>";
+            htmls += "<td class='td_date center'>" + historyOne.date + "</td>";
+            htmls += "<td class='td_author center'>" + historyOne.author + "</td>";
+            htmls += "<td class='td_message left'><div class='scroll div_message' style='max-height: 60px;'>" + historyOne.message + "</div></td>";
+            htmls += "<td class='td_files left'><div class='scroll div_files' style='max-height: 60px;'>"
 
             const changes = historyOne.changes;
             for(let cdx=0; cdx<changes.length; cdx++) {
@@ -676,9 +684,11 @@ class DXSVNTarget extends DXTarget {
         </body>
         </html>
         `;
+        
+        let wid = window.outerWidth  - 100;
+        let hei = window.outerHeight - 100;
 
-
-        const pop = window.open("", "svnhistory", "width=700, height=550, toolbar=no, status=no");
+        const pop = window.open("", "svnhistory", "width=" + wid + ", height=" + hei + ", toolbar=no, status=no");
         pop.document.write(htmls.trim());
     }
 
@@ -727,7 +737,7 @@ class DXSVNTarget extends DXTarget {
                                         )
                                     }
                                     <label style={{'marginLeft' : '10px'}}><input type="checkbox" className="chk_use_default" value="Y" checked={this.state.useDefault} onChange={(e) => { this.onChangeUseDefaults(e); }} style={{'marginRight' : '5px'}}/><span>HEAD Revision</span></label>
-                                    <input type="button" className="btnSVNHistory dxbtn small" value="히스토리" onClick={() => { this.showHistory(); }}/>
+                                    <input type="button" className="btnSVNHistory dxbtn small" value="히스토리" onClick={() => { this.showHistory(); }} style={{ marginLeft: '10px' }}/>
                                 </span>
                             </div>
                             <div className="col-sm-5">
