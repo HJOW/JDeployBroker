@@ -566,6 +566,122 @@ class DXSVNTarget extends DXTarget {
         });
     }
 
+    getHistory() {
+        const selfs = this;
+        let formTag = null;
+        $('.form_target_element').each(function() {
+            if( $(this).attr('data-name') == selfs.props.targetdata.NAME )  {
+                formTag = $(this);
+            }
+        });
+
+        if(formTag == null) { alert('배포 대상 정보를 매핑하는 데 실패하였습니다. 화면을 새로고침하여 주십시오.'); return; }
+        let formJson = $.dx.buildJsonFrom(formTag);
+
+        return new Promise((resolve, reject) => {
+            let returned = false;
+            $.dx.ajax({
+                url : $.ctx + '/jsp/program/historysvn.jsp',
+                data : formJson,
+                dataType : 'JSON',
+                method : 'POST',
+                success : function(res) {
+                    if(! res.success) { returned = true; reject(res.message); return; }
+
+                    returned = true;
+                    resolve(res.data);
+                }, error : function(jqXHR, textStatus, errorThrown) {
+                    if(returned) return;
+                    returned = true;
+                    reject(errorThrown);
+                }, complete : function() {
+                    if(returned) return;
+                    returned = true;
+                    reject('Unknown Error');
+                }
+            });
+        });
+    }
+
+    async showHistory() {
+        const histories = await this.getHistory();
+        let htmls = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8"/>
+            <style>
+            body {margin: 0; padding-top: 0; padding-left: 10px; padding-right: 15px; padding-bottom: 10px;}
+            table { width: 100%; border-collapse: collapse; }
+            th, td { 
+                border: 1px solid black; 
+                font-family: "D2Coding", "나눔고딕코딩", NanumGothicCoding, "Nanum Gothic Coding", "나눔고딕", 'Nanum Gothic', NanumGothic; 
+                font-size: 10px; 
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: pre-wrap;
+            }
+            td .scroll {
+                overflow: auto;
+                width: 100%;
+            }
+            </style>
+        </head>
+        <body>
+            <h4>SVN History</h4>
+            <div>
+                <table>
+                    <colgroup>
+                        <col style="width: 60px"/>
+                        <col style="width: 120px"/>
+                        <col style="width: 100px"/>
+                        <col/>
+                        <col style="width: 150px"/>
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>Revision</th>
+                        <th>날짜</th>
+                        <th>작업자</th>
+                        <th>메시지</th>
+                        <th>파일</th>
+                    </tr>
+                    </thead>
+                    <tbody>`;
+
+        for(let idx=0; idx<histories.length; idx++) {
+            const historyOne = histories[idx];
+
+            htmls += "<tr class='tr_svn_histories'>";
+            htmls += "<td class='td_revision'>" + historyOne.revision + "</td>";
+            htmls += "<td class='td_date'>" + historyOne.date + "</td>";
+            htmls += "<td class='td_author'>" + historyOne.author + "</td>";
+            htmls += "<td class='td_message'><div class='scroll div_message' style='max-height: 50px;'>" + historyOne.message + "</div></td>";
+            htmls += "<td class='td_files'><div class='scroll div_files' style='max-height: 50px;'>"
+
+            const changes = historyOne.changes;
+            for(let cdx=0; cdx<changes.length; cdx++) {
+                var changesOne = changes[cdx];
+
+                htmls += "<div>"
+                htmls += "<div class='div_change_path'>" + changesOne.path + "</div>";
+                htmls += "</div>"
+            }
+
+            htmls += "</div></td>";
+            htmls += "</tr>";
+        }
+
+        htmls += `</tbody></table></div>
+        </body>
+        </html>
+        `;
+
+
+        const pop = window.open("", "svnhistory", "width=700, height=550, toolbar=no, status=no");
+        pop.document.write(htmls.trim());
+    }
+
     onChangeUseDefaults(e) {
         const changingParam = {
             useDefault : !this.state.useDefault
@@ -611,6 +727,7 @@ class DXSVNTarget extends DXTarget {
                                         )
                                     }
                                     <label style={{'marginLeft' : '10px'}}><input type="checkbox" className="chk_use_default" value="Y" checked={this.state.useDefault} onChange={(e) => { this.onChangeUseDefaults(e); }} style={{'marginRight' : '5px'}}/><span>HEAD Revision</span></label>
+                                    <input type="button" className="btnSVNHistory dxbtn small" value="히스토리" onClick={() => { this.showHistory(); }}/>
                                 </span>
                             </div>
                             <div className="col-sm-5">

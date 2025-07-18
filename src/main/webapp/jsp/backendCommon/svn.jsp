@@ -19,7 +19,7 @@ public long checkoutSVN(File dir, String svnUrl, long revision, String id, Strin
     
     boolean useJavaHL = false;
     
-    // JavaHL 라이브러리 존재여부 체크
+    // SVNKit, JavaHL 라이브러리 존재여부 체크
     try {
         Class.forName("org.tmatesoft.svn.core.wc.SVNClientManager");
         useJavaHL = false;
@@ -80,5 +80,81 @@ public long checkoutSVN(File dir, String svnUrl, long revision, String id, Strin
 
 public long checkoutSVN(File dir, String svnUrl, String id, String password) {
     return checkoutSVN(dir, svnUrl, -1, id, password);
+}
+
+public List<Map<String, Object>> getHistory(String svnUrl, String id, String password) {
+    boolean useJavaHL = false;
+
+    // SVNKit, JavaHL 라이브러리 존재여부 체크
+    try {
+        Class.forName("org.tmatesoft.svn.core.wc.SVNClientManager");
+        useJavaHL = false;
+    } catch(ClassNotFoundException ex) {
+        useJavaHL = true;
+    }
+
+    if(useJavaHL) {
+        return getHistoryViaJavaHL(svnUrl, id, password);
+    } else {
+        return getHistoryViaSVNKit(svnUrl, id, password);
+    }
+}
+
+private List<Map<String, Object>> getHistoryViaJavaHL(String svnUrl, String id, String password) {
+    return new ArrayList<Map<String, Object>>(); // TODO
+}
+
+private List<Map<String, Object>> getHistoryViaSVNKit(String svnUrl, String id, String password) {
+    try {
+        org.tmatesoft.svn.core.SVNURL url = org.tmatesoft.svn.core.SVNURL.parseURIDecoded(svnUrl);
+        org.tmatesoft.svn.core.io.SVNRepository repo = org.tmatesoft.svn.core.io.SVNRepositoryFactory.create(url);
+        java.text.SimpleDateFormat formatter16 = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        org.tmatesoft.svn.core.auth.ISVNAuthenticationManager authMan = org.tmatesoft.svn.core.wc.SVNWCUtil.createDefaultAuthenticationManager(id, password);
+        repo.setAuthenticationManager(authMan);
+
+        Collection<?> entries = repo.log(new String[] {""}, null, 0, -1, true, true);
+        Iterator<?> iter = entries.iterator();
+
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        while(iter.hasNext()) {
+            org.tmatesoft.svn.core.SVNLogEntry entryOne = (org.tmatesoft.svn.core.SVNLogEntry) iter.next();
+            Map<String, Object> entryMap = new HashMap<String, Object>();
+
+            entryMap.put("revision", new Long(entryOne.getRevision()));
+            entryMap.put("author", entryOne.getAuthor());
+            entryMap.put("date", formatter16.format(entryOne.getDate()));
+            entryMap.put("message", entryOne.getMessage());
+
+            List<Map<String, Object>> listChanges = new ArrayList<Map<String, Object>>();
+            Map<String, org.tmatesoft.svn.core.SVNLogEntryPath> changeMap = entryOne.getChangedPaths();
+
+            Set<String> changeKeys = changeMap.keySet();
+            for(String k : changeKeys) {
+                org.tmatesoft.svn.core.SVNLogEntryPath changePathOne = changeMap.get(k);
+                Map<String, Object> changes = new HashMap<String, Object>();
+
+                changes.put("type", changePathOne.getType());
+                changes.put("path", changePathOne.getPath());
+                changes.put("isCopy", new Boolean(changePathOne.getCopyPath() != null));
+                if(changePathOne.getCopyPath() != null) {
+                    changes.put("copyPath", changePathOne.getCopyPath());
+                    changes.put("copyRevision", changePathOne.getCopyRevision());
+                }
+
+                listChanges.add(changes);
+            }
+
+            entryMap.put("changes", listChanges);
+            list.add(entryMap);
+        }
+
+        return list;
+    } catch(org.tmatesoft.svn.core.SVNAuthenticationException ex) {
+        throw new RuntimeException("AUTH FAILED - " + ex.getMessage(), ex);
+    } catch(Exception ex) {
+        throw new RuntimeException(ex.getMessage(), ex);
+    }
 }
 %>
