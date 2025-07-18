@@ -167,6 +167,7 @@ try {
     
     // 목적지 war 파일명 지정
     String destWarName = ConfigManager.getConfig("WARNAME");
+    if(isEmpty(destWarName)) destWarName = target.get("WARNAME") == null ? "" : target.get("WARNAME") + "";
     if(isEmpty(destWarName)) destWarName = target.get("NAME") + ".war";
     
     // 실제 경로로 파일을 이동시키기 (읽어서 쓰기 - 덮어씌우기 위함)
@@ -209,12 +210,41 @@ try {
         comp += r;
         loopCnt++;
 
-        if(loopCnt % 10 == 0) setProgress(sess, jobType, jobCode, (int) (comp / 16384), (int) (len / 16384), "WAR 파일 복사 중...");
+        if(loopCnt % 10 == 0) setProgress(sess, jobType, jobCode, (int) (comp / 16384L), (int) ((len + 2L) / 16384L), "WAR 파일 복사 중...");
         if(loopCnt % sleepGap == 0) Thread.sleep(50L);
     }
 
     fout.close(); fout = null;
     finp.close(); finp = null;
+    
+    // 작업에 쓰인 파일 삭제
+    setProgress(sess, jobType, jobCode, (int) (len / 16384L), (int) ((len + 2L) / 16384L), "임시 파일 정리 중...");
+    try {
+        if(warFile != null) {
+            if(warFile.exists()) warFile.delete();
+            warFile = null;
+        }
+        if(tempDirDates != null) {
+            if(tempDirDates.exists()) {
+                delete(tempDirDates);
+            }
+            tempDirDates = null;
+        }
+    } catch(Exception tries) {
+        setProgress(sess, jobType, jobCode, (int) (len / 16384L), (int) ((len + 2L) / 16384L), "임시 파일 정리 실패 - " + tries.getMessage() + ", 차후 다시 시도");
+        Thread.sleep(2000L);
+    }
+    
+    // WAR 파일 복사 완료되고 몇 초 기다려야 함
+    String sAfterWaits = target.get("AFTER_WAITS") == null ? "" : target.get("AFTER_WAITS") + "";
+    if(isEmpty(sAfterWaits)) sAfterWaits = ConfigManager.getConfig("AfterWaits");
+    if(isEmpty(sAfterWaits)) sAfterWaits = "4000";
+    long   afterWaits  = Long.parseLong(sAfterWaits);
+    
+    setProgress(sess, jobType, jobCode, (int) ((len + 1L) / 16384L), (int) ((len + 2L) / 16384L), "후속 작업 중...");
+    if(afterWaits > 0) {
+        Thread.sleep(afterWaits);
+    }
 
     // 작업 완료
     LOGGER.info("END !");
@@ -231,14 +261,25 @@ try {
 } finally {
     if(fout != null) { try { fout.close(); } catch(Exception exIn) {} }
     if(finp != null) { try { finp.close(); } catch(Exception exIn) {} }
-    if(warFile != null) {
-        if(warFile.exists()) delete(warFile);
-    }
-    if(tempDirDates != null) {
-        if(tempDirDates.exists()) {
-            delete(tempDirDates);
+    
+    try {
+        if(warFile != null) {
+            if(warFile.exists()) warFile.delete();
         }
+    } catch(Exception tries) {
+        LOGGER.error("Error on clean war - " + tries.getMessage(), tries);
     }
+    
+    try {
+        if(tempDirDates != null) {
+            if(tempDirDates.exists()) {
+                delete(tempDirDates);
+            }
+        }
+    } catch(Exception tries) {
+        LOGGER.error("Error on clean temps - " + tries.getMessage(), tries);
+    }
+    
     setProgress(sess, jobType, jobCode, 0, 100, "작업 완료");
 }
 

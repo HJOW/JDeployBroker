@@ -35,7 +35,7 @@ try {
     width  -= 20;
     height -= 40;
     
-    String capt = createCaptcha(randomKey, width, height);
+    String capt = createCaptcha(randomKey, width, height, true);
 
     String reqType = request.getParameter("type");
     if(reqType != null && "img".equals(reqType)) {

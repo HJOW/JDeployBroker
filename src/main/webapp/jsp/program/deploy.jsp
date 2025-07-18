@@ -111,7 +111,7 @@ try {
         // JobType, JobCode 받기
         jobType = params.get("JobType");
         jobCode = params.get("JobCode");
-        setProgress(sess, jobType, jobCode, -1, 100, "준비 중...");
+        setProgress(sess, jobType, jobCode, -1, 100, "준비 중... (파일 업로드 중...)");
 
         // 이름으로 배포 대상 찾기
         String deployName = params.get("NAME");
@@ -124,6 +124,8 @@ try {
 
         if(target == null) throw new NullPointerException("해당하는 배포 대상을 찾을 수 없습니다.");
         if(warFile == null) throw new FileNotFoundException("파일이 첨부되지 않았습니다.");
+        
+        setProgress(sess, jobType, jobCode, -1, 100, "준비 중... (파일 도착 완료)");
 
         // 접근 권한 체크
         if(! sessionMap.get("GRADE").trim().equalsIgnoreCase("MASTER")) { // MASTER 인 경우 최상위 권한으로 체크할 필요 없음
@@ -149,6 +151,7 @@ try {
         
         // 목적지 war 파일명 지정
         String destWarName = ConfigManager.getConfig("WARNAME");
+        if(isEmpty(destWarName)) destWarName = target.get("WARNAME") == null ? "" : target.get("WARNAME") + "";
         if(isEmpty(destWarName)) destWarName = target.get("NAME") + ".war";
 
         // 실제 경로로 파일을 이동시키기 (읽어서 쓰기 - 덮어씌우기 위함)
@@ -191,12 +194,41 @@ try {
             comp += r;
             loopCnt++;
 
-            if(loopCnt % 10 == 0) setProgress(sess, jobType, jobCode, (int) (comp / 16384), (int) (len / 16384), "WAR 파일 복사 중...");
+            if(loopCnt % 10 == 0) setProgress(sess, jobType, jobCode, (int) (comp / 16384L), (int) ((len + 2L) / 16384L), "WAR 파일 복사 중...");
             if(loopCnt % sleepGap == 0) Thread.sleep(50L);
         }
 
         fout.close(); fout = null;
         finp.close(); finp = null;
+        
+        // 작업에 쓰인 파일 삭제
+        setProgress(sess, jobType, jobCode, (int) (len / 16384L), (int) ((len + 2L) / 16384L), "임시 파일 정리 중...");
+        try {
+            if(warFile != null) {
+                if(warFile.exists()) warFile.delete();
+                warFile = null;
+            }
+            if(tempDirDates != null) {
+                if(tempDirDates.exists()) {
+                    delete(tempDirDates);
+                }
+                tempDirDates = null;
+            }
+        } catch(Exception tries) {
+            setProgress(sess, jobType, jobCode, (int) (len / 16384L), (int) ((len + 2L) / 16384L), "임시 파일 정리 실패 - " + tries.getMessage() + ", 차후 다시 시도");
+            Thread.sleep(2000L);
+        }
+        
+        // WAR 파일 복사 완료되고 몇 초 기다려야 함
+        String sAfterWaits = target.get("AFTER_WAITS") == null ? "" : target.get("AFTER_WAITS") + "";
+        if(isEmpty(sAfterWaits)) sAfterWaits = ConfigManager.getConfig("AfterWaits");
+        if(isEmpty(sAfterWaits)) sAfterWaits = "4000";
+        long   afterWaits  = Long.parseLong(sAfterWaits);
+        
+        setProgress(sess, jobType, jobCode, (int) ((len + 1L) / 16384L), (int) ((len + 2L) / 16384L), "후속 작업 중...");
+        if(afterWaits > 0) {
+            Thread.sleep(afterWaits);
+        }
 
         // 작업 완료
     } else {
@@ -214,14 +246,24 @@ try {
 } finally {
     if(fout != null) { try { fout.close(); } catch(Exception exIn) {} }
     if(finp != null) { try { finp.close(); } catch(Exception exIn) {} }
-    if(warFile != null) {
-        if(warFile.exists()) warFile.delete();
-    }
-    if(tempDirDates != null) {
-        if(tempDirDates.exists()) {
-            delete(tempDirDates);
+    try {
+        if(warFile != null) {
+            if(warFile.exists()) warFile.delete();
         }
+    } catch(Exception tries) {
+        LOGGER.error("Error on clean war - " + tries.getMessage(), tries);
     }
+    
+    try {
+        if(tempDirDates != null) {
+            if(tempDirDates.exists()) {
+                delete(tempDirDates);
+            }
+        }
+    } catch(Exception tries) {
+        LOGGER.error("Error on clean temps - " + tries.getMessage(), tries);
+    }
+    
     setProgress(sess, jobType, jobCode, 0, 100, "작업 완료");
 }
 

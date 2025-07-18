@@ -323,7 +323,7 @@ class DXLoginScreen extends React.Component {
                                 <iframe src={ $.ctx + '/jsp/program/captcha.jsp?type=html&width=300&height=100' } style={{ width: '300px', height : '100px', border: '0' }}></iframe>
                             </div>
                             <div style={{"textAlign" : "right"}}>
-                                <input type='text' name='captcha' placeholder='' style={{ height : '25px', linnerHeight : '25px', marginRight : '5px' }} onKeyPress={(e) => { if(e.keyCode == 13 || e.charCode == 13) {  $('#btnSubmit').trigger('click');  }; return false; }}/>
+                                <input type='text' name='captcha' placeholder='Please enter 6 english alphabets shown in the image.' style={{ height : '25px', linnerHeight : '25px', marginRight : '5px', width: '360px' }} onKeyPress={(e) => { if(e.keyCode == 13 || e.charCode == 13) {  $('#btnSubmit').trigger('click');  }; return false; }}/>
                                 <button className="dxbtn dxbtn2" type="button" id="btnSubmit">LOG IN</button>
                             </div>
                         </div>
@@ -392,6 +392,7 @@ class DXTarget extends React.Component {
         }, 2000);
 
         // 전송
+        divProg.attr('data-message', '파일 업로드 중...');
         const formData = new FormData( formTag[0] );
         let endMsg = '';
         $.dx.ajax({
@@ -525,6 +526,7 @@ class DXSVNTarget extends DXTarget {
         }, 2000);
 
         // 전송
+        divProg.attr('data-message', '작업 중...');
         const formData = new FormData( formTag[0] );
         $.dx.ajax({
             url : $.ctx + '/jsp/program/deploysvn.jsp',
@@ -800,6 +802,7 @@ class DXGITTarget extends DXSVNTarget {
         }, 2000);
 
         // 전송
+        divProg.attr('data-message', '작업 중...');
         const formData = new FormData( formTag[0] );
         $.dx.ajax({
             url : $.ctx + '/jsp/program/deploygit.jsp',
