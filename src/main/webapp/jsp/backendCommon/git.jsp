@@ -58,6 +58,18 @@ public List<Map<String, Object>> getHistory(String remoteUrl) {
             list.add(entryMap);
         }
         
+        // 정렬
+        list.sort(new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> t1, Map<String, Object> t2) {
+                if(t2 == null) return -1;
+                if(t1 == null) return 1;
+                String rev1 = String.valueOf(t1.get("revision"));
+                String rev2 = String.valueOf(t2.get("revision"));
+                return rev2.compareTo(rev1);
+            }
+        });
+        
         return list;
     } catch(Exception ex) {
         throw new RuntimeException(ex.getMessage(), ex);

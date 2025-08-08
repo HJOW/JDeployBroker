@@ -145,10 +145,21 @@ private List<Map<String, Object>> getHistoryViaSVNKit(String svnUrl, String id, 
 
                 listChanges.add(changes);
             }
-
             entryMap.put("changes", listChanges);
             list.add(entryMap);
         }
+        
+        // 정렬
+        list.sort(new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> t1, Map<String, Object> t2) {
+                if(t2 == null) return -1;
+                if(t1 == null) return 1;
+                Number rev1 = (Number) t1.get("revision");
+                Number rev2 = (Number) t2.get("revision");
+                return rev2.intValue() - rev1.intValue(); // 역순
+            }
+        });
 
         return list;
     } catch(org.tmatesoft.svn.core.SVNAuthenticationException ex) {
