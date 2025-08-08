@@ -83,10 +83,23 @@ public void prepare(Connection conn) throws Exception {
         pstmt.close(); pstmt = null;
         
         if(counts <= 0) {
-            pstmt = conn.prepareStatement("DROP TABLE JDP_NUMBERS");
-            pstmt.execute();
-            conn.commit();
-            pstmt.close(); pstmt = null;
+            try {
+                pstmt = conn.prepareStatement("DROP TABLE JDP_NUMBERS");
+                pstmt.execute();
+                conn.commit();
+                pstmt.close(); pstmt = null;
+            } catch(SQLException exIn) {} finally {
+                if(pstmt != null) { pstmt.close(); pstmt = null; }
+            }
+            
+            try {
+                pstmt = conn.prepareStatement("DROP TABLE JDP_JOBS");
+                pstmt.execute();
+                conn.commit();
+                pstmt.close(); pstmt = null;
+            } catch(SQLException exIn) {} finally {
+                if(pstmt != null) { pstmt.close(); pstmt = null; }
+            }
             prepared = false;
         } else {
             prepared = true;
@@ -102,8 +115,8 @@ public void prepare(Connection conn) throws Exception {
     
     // 준비가 안되었으면...
     
-    // JDP_NUMBERS 처리
     try {
+        // JDP_NUMBERS 처리
         pstmt = conn.prepareStatement("CREATE TABLE JDP_NUMBERS (NUM INTEGER, CONSTRAINT PK_JDP_NUMBERS PRIMARY KEY(NUM))");
         pstmt.execute();
         conn.commit();
@@ -116,6 +129,31 @@ public void prepare(Connection conn) throws Exception {
             conn.commit();
             pstmt.close(); pstmt = null;
         }
+        
+        // JDP_JOBS 처리
+        String sql = "CREATE TABLE JDP_JOBS (";
+        sql += "\n" + "  JTYPE       VARCHAR(5)";
+        sql += "\n" + ", JNAME       VARCHAR(255)";
+        sql += "\n" + ", JREALPATH   VARCHAR(255)";
+        sql += "\n" + ", JURL        VARCHAR(255)";
+        sql += "\n" + ", JDISABLED   VARCHAR(5)";
+        sql += "\n" + ", JREPOURL    VARCHAR(255)";
+        sql += "\n" + ", JREPOID     VARCHAR(255)";
+        sql += "\n" + ", JREPOPW     VARCHAR(255)";
+        sql += "\n" + ", JBUILDER    VARCHAR(255)";
+        sql += "\n" + ", JMVNGOAL    VARCHAR(100)";
+        sql += "\n" + ", JMVNPROFILE VARCHAR(100)";
+        sql += "\n" + ", JWARDIR     VARCHAR(255)";
+        sql += "\n" + ", CONSTRAINT PK_JDP_JOBS PRIMARY KEY (JNAME)";
+        sql += "\n" + ")  ";
+        
+        pstmt = conn.prepareStatement(sql);
+        pstmt.execute();
+        conn.commit();
+        pstmt.close(); pstmt = null;
+        
+        
+        prepared = true;
     } catch(SQLException ex) {
         prepared = false;
     } catch(Exception ex) {
