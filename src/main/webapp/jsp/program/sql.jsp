@@ -78,8 +78,9 @@ try {
     if(sql.equals("")) throw new NullPointerException("There is no SQL statement !");
     
     if(mode.equals("SELECT")) {
-        List<Map<String, Object>> res = select(LOGGER, sql, null);
-        results.put("data", res);
+        Map<String, Object> metaMap = selectMeta(LOGGER, sql, null);
+        results.put("data", (List<Map<String, Object>>) metaMap.get("list"));
+        results.put("columns", (List<String>) metaMap.get("columns"));
     } else {
         int uc = execute(LOGGER, sql, null);
         results.put("updates", new Integer(uc));

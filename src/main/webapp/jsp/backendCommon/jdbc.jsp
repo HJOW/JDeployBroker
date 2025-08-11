@@ -82,7 +82,22 @@ public void prepare(Connection conn) throws Exception {
         rs.close(); rs = null;
         pstmt.close(); pstmt = null;
         
-        if(counts <= 0) {
+        if(counts >= 1) prepared = true;
+        if(prepared) {
+            pstmt = conn.prepareStatement("SELECT COUNT(*) AS CNT FROM JDP_JOBS");
+            rs = pstmt.executeQuery();
+            
+            while(rs.next()) {
+                counts = rs.getInt(1);
+            }
+            
+            rs.close(); rs = null;
+            pstmt.close(); pstmt = null;
+            
+            prepared = true;
+        }
+        
+        if(! prepared) {
             try {
                 pstmt = conn.prepareStatement("DROP TABLE JDP_NUMBERS");
                 pstmt.execute();
@@ -101,8 +116,6 @@ public void prepare(Connection conn) throws Exception {
                 if(pstmt != null) { pstmt.close(); pstmt = null; }
             }
             prepared = false;
-        } else {
-            prepared = true;
         }
     } catch(SQLException ex) {
         prepared = false;
@@ -166,7 +179,17 @@ private Connection connection = null;
 
 /** SELECT 동작 기본 메소드 */
 public synchronized List<Map<String, Object>> select(org.apache.logging.log4j.Logger LOGGER, String sql, List<String> params) {
-    List<Map<String, Object>> res = null;
+    Map<String, Object> details = selectMeta(LOGGER, sql, params);
+    if(details == null) return null;
+    
+    List<Map<String, Object>> res = (List<Map<String, Object>>) details.get("list");
+    return res;
+}
+
+/** SELECT 동작 상세 메소드 (메타 데이터 포함) */
+public synchronized Map<String, Object> selectMeta(org.apache.logging.log4j.Logger LOGGER, String sql, List<String> params) {
+    Map<String, Object> res = null;
+    List<Map<String, Object>> resList = null;
     List<String> columns = null;
     Map<String, Object> rowOne = null;
     
@@ -190,7 +213,8 @@ public synchronized List<Map<String, Object>> select(org.apache.logging.log4j.Lo
         ResultSetMetaData meta = rs.getMetaData();
         
         columns = new ArrayList<String>();
-        res = new ArrayList<Map<String, Object>>();
+        res = new HashMap<String, Object>();
+        resList = new ArrayList<Map<String, Object>>();
         
         colIndex = meta.getColumnCount();
         for(int idx=0; idx<colIndex; idx++) {
@@ -204,8 +228,11 @@ public synchronized List<Map<String, Object>> select(org.apache.logging.log4j.Lo
                 rowOne.put(c, rs.getObject(c));
             }
             
-            res.add(rowOne);
+            resList.add(rowOne);
         }
+        
+        res.put("list", resList);
+        res.put("columns", columns);
         
         rs.close();
         pstmt.close();

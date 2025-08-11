@@ -35,7 +35,7 @@ function fGetProgress(jobType, jobCode) {
 /** Deploy Broker 메인 화면 컴포넌트 */
 class DXDeployMain extends React.Component {
     state = {
-        session : { logined : false }
+        session : { logined : false, GRADE : 'GUEST' }
     };
     
     checkSessionStatus() {
@@ -52,7 +52,8 @@ class DXDeployMain extends React.Component {
                             session : {
                                 logined : true,
                                 ID : res.session.ID,
-                                NAME : res.session.NAME
+                                NAME : res.session.NAME,
+                                GRADE : res.session.GRADE
                             }
                         }, () => { resolve(res); });
                     } else {
@@ -74,7 +75,7 @@ class DXDeployMain extends React.Component {
         const selfs = this;
         this.checkSessionStatus().catch((exc) => {
             if(exc != null) $.toast('Error : ' + exc);
-            selfs.setState({session : { logined : false }});
+            selfs.setState({session : { logined : false, GRADE : 'GUEST' }});
         });
     }
     
@@ -104,6 +105,10 @@ class DXNorthBar extends React.Component {
         this.processLogout().then((sess) => {
             selfs.props.root.checkSessionStatus().then((res) => {  }).catch((err) => { $.toast(err); });
         }).catch((err) => { $.toast(err); });
+    }
+    
+    openSqlMan() {
+        return window.open($.ctx + '/jsp/sqlclient.jsp', 'sqlman', 'width=750, height=550, toolbar=no, status=no');
     }
 
     processLogout() {
@@ -144,6 +149,11 @@ class DXNorthBar extends React.Component {
                                         <li>
                                             <a href="#" className="a_navtop_session a_navtop_profile">{this.props.session.NAME} ({this.props.session.ID}) 님 환영합니다.</a>
                                         </li>
+                                        {this.props.session.GRADE == 'MASTER' ? (
+                                            <li>
+                                                <a href="#" className="a_navtop_session a_navtop_session_sqlman a_navtop_sqlman" onClick={() => { this.openSqlMan(); }}>SQL</a>
+                                            </li>
+                                        ) : null}
                                         <li>
                                             <a href="#" className="a_navtop_session a_navtop_session_ctrl a_navtop_logout" onClick={() => { this.tryLogout(); }}>로그아웃</a>
                                         </li>
