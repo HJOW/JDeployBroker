@@ -121,12 +121,13 @@ $(function() {
                             
                             for(jdx=0; jdx<data.data.length; jdx++) {
                                 var trOne = tbodyOne.find("tr[data-rowidx='" + jdx + "']");
+                                var rows = data.data[jdx];
                                 idx = 0;
-                                $.each(data.data[jdx], function(k, v) {
-                                    var td = trOne.find("td[data-colidx='" + idx + "']");
-                                    td.text(v);
-                                    idx++;
-                                });
+                                
+                                for(idx=0; idx<data.columns.length; idx++) {
+                                	var td = trOne.find("td[data-colidx='" + idx + "']");
+                                    td.text(rows[ data.columns[idx] ]);
+                                }
                             }
                         } else {
                             divRes.text("영향받은 행의 수 : " + data.updates);
