@@ -107,8 +107,8 @@ class DXNorthBar extends React.Component {
         }).catch((err) => { $.toast(err); });
     }
     
-    openSqlMan() {
-        return window.open($.ctx + '/jsp/sqlclient.jsp', 'sqlman', 'width=750, height=550, toolbar=no, status=no');
+    openAdminManager() {
+        return window.open($.ctx + '/jsp/admin.jsp', 'admin_pop', 'width=750, height=550, toolbar=no, status=no');
     }
 
     processLogout() {
@@ -151,7 +151,7 @@ class DXNorthBar extends React.Component {
                                         </li>
                                         {this.props.session.GRADE == 'MASTER' ? (
                                             <li>
-                                                <a href="#" className="a_navtop_session a_navtop_session_sqlman a_navtop_sqlman" onClick={() => { this.openSqlMan(); }}>SQL</a>
+                                                <a href="#" className="a_navtop_session a_navtop_session_sqlman a_navtop_sqlman" onClick={() => { this.openAdminManager(); }}>관리</a>
                                             </li>
                                         ) : null}
                                         <li>
@@ -210,7 +210,12 @@ class DXDeployContentArea extends React.Component {
                 reject('not logined');
                 return;
             }
+            
+            var responsed = false;
 
+            var prog = $('.div_prog_gettargets');
+            prog.removeClass('invisible');
+            
             $.dx.ajax({
                 url : $.ctx + '/jsp/program/targets.jsp',
                 data : {},
@@ -218,11 +223,20 @@ class DXDeployContentArea extends React.Component {
                 dataType : 'json',
                 success : function(res) {
                     if(res.success) {
+                        prog.addClass('invisible');
+                        if(responsed) return;
+                        responsed = true;
                         resolve(res.targets);
                     } else {
+                        prog.addClass('invisible');
+                        if(responsed) return;
+                        responsed = true;
                         reject(res.message);
                     }
                 }, error : function() {
+                    prog.addClass('invisible');
+                    if(responsed) return;
+                    responsed = true;
                     reject(null);
                 }
             });
@@ -245,6 +259,9 @@ class DXDeployContentArea extends React.Component {
                                 }
                             })
                         }
+                    </div>
+                    <div className="div_prog_gettargets invisible">
+                        <progress></progress>
                     </div>
                 </div>
             );

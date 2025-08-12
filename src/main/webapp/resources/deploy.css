@@ -1,3 +1,21 @@
 .dxdeploy_target_one {
 	margin-bottom: 20px;
 }
+.div_prog_gettargets {
+	position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 6000;
+	width: 100%;
+	height: 99999px;
+	display: inline;
+	text-align: center;
+	vertical-align: top;
+	background-color: rgba(200, 200, 200, 0.5);
+}
+
+.div_prog_gettargets progress {
+	text-align: center;
+    vertical-align: middle;
+    margin-top: 400px;
+}

@@ -30,10 +30,25 @@ public File dbRootDir() {
     return dir;
 }
 
+private Boolean usingDB = null;
+public synchronized boolean checkUsingDB() {
+    if(usingDB == null) {
+        String sUsingDB = ConfigManager.getConfig("USE_DB");
+        if(sUsingDB == null) { usingDB = new Boolean(true); usingDB.booleanValue(); }
+        sUsingDB = sUsingDB.trim().toUpperCase();
+        if(sUsingDB.equals("")) { usingDB = new Boolean(true); usingDB.booleanValue(); } 
+        usingDB = new Boolean((sUsingDB.equals("Y") || sUsingDB.equals("YES") || sUsingDB.equals("TRUE") || sUsingDB.equals("T")));
+    }
+    
+    return usingDB.booleanValue();
+}
+
 /** H2 Embedded DB 접속 */
 public synchronized Connection connect() {
     Connection conn = null;
     try {
+        if(! checkUsingDB()) return null;
+        
         Class.forName("org.h2.Driver");
         
         File dbDir = dbRootDir();
@@ -42,7 +57,7 @@ public synchronized Connection connect() {
         String strDbDir = dbDir.getAbsolutePath();
         strDbDir = strDbDir.replace("\\", "/");
         
-        conn = DriverManager.getConnection("jdbc:h2:" + strDbDir);
+        conn = DriverManager.getConnection("jdbc:h2:" + strDbDir + ";AUTO_SERVER=TRUE");
         prepare(conn);
         
         return conn;
@@ -64,6 +79,8 @@ public synchronized Connection connect() {
 
 /** DB 사용 직후 사용준비 (테이블 생성) */
 public void prepare(Connection conn) throws Exception {
+    if(! checkUsingDB()) return;
+    
     int counts = 0;
     boolean prepared = false;
     
@@ -179,6 +196,8 @@ private Connection connection = null;
 
 /** SELECT 동작 기본 메소드 */
 public synchronized List<Map<String, Object>> select(org.apache.logging.log4j.Logger LOGGER, String sql, List<String> params) {
+    if(! checkUsingDB()) return new ArrayList<Map<String, Object>>();
+    
     Map<String, Object> details = selectMeta(LOGGER, sql, params);
     if(details == null) return null;
     
@@ -188,6 +207,8 @@ public synchronized List<Map<String, Object>> select(org.apache.logging.log4j.Lo
 
 /** SELECT 동작 상세 메소드 (메타 데이터 포함) */
 public synchronized Map<String, Object> selectMeta(org.apache.logging.log4j.Logger LOGGER, String sql, List<String> params) {
+    if(! checkUsingDB()) return new HashMap<String, Object>();
+    
     Map<String, Object> res = null;
     List<Map<String, Object>> resList = null;
     List<String> columns = null;
@@ -249,6 +270,7 @@ public synchronized Map<String, Object> selectMeta(org.apache.logging.log4j.Logg
 
 /** CREATE, UPDATE, DELETE, DDL 동작 기본 메소드 */
 public synchronized int execute(org.apache.logging.log4j.Logger LOGGER, String sql, List<String> params) {
+    if(! checkUsingDB()) return 0;
     if(connection == null) connection = connect();
     
     PreparedStatement pstmt = null;
@@ -280,11 +302,13 @@ public synchronized int execute(org.apache.logging.log4j.Logger LOGGER, String s
 }
 
 public void commit(org.apache.logging.log4j.Logger LOGGER) {
+    if(! checkUsingDB()) return;
     if(connection == null) return;
     try { connection.commit(); } catch(Exception exc) { LOGGER.error("Exception when executing JDBC commit - " + exc.getMessage(), exc); }
 }
 
 public void rollback(org.apache.logging.log4j.Logger LOGGER) {
+    if(! checkUsingDB()) return;
     if(connection == null) return;
     try { connection.rollback(); } catch(Exception exc) { LOGGER.error("Exception when executing JDBC rollback - " + exc.getMessage(), exc); }
 }
